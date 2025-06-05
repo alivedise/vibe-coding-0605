@@ -3,7 +3,7 @@ import Citizen from '@/core/models/Citizen';
 import { BUILDING_TYPES } from '@/constants/buildingTypes';
 import { faker } from '@faker-js/faker'; // For generating citizen data if not provided
 
-const MAX_CITIZENS_PER_RESIDENCE = 5; // Example capacity
+const MAX_CITIZENS_PER_RESIDENCE = 1; // Example capacity
 const SPAWN_INTERVAL_TICKS = 5; // Attempt to spawn a citizen every 100 ticks
 
 class CitizenManager {

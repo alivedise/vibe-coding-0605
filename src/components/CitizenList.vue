@@ -18,6 +18,10 @@
         <br />
         Position: ({{ citizen.x }}, {{ citizen.y }})
         <br />
+        Target: ({{ citizen.targetGridX }}, {{ citizen.targetGridY }})
+        <br />
+        Target Building ID: <span class="citizen-id">{{ citizen.targetBuildingId ? citizen.targetBuildingId.substring(0, 8) : 'N/A' }}</span>
+        <br />
         Home ID: <span class="citizen-id">{{ citizen.homeBuildingId ? citizen.homeBuildingId.substring(0, 8) : 'N/A' }}</span>
       </li>
     </ul>

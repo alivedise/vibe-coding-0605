@@ -12,5 +12,5 @@ export const TERRAIN_COLORS = {
     [TERRAIN_TYPES.MOUNTAIN]: 'gray',
 };
 
-export const DEFAULT_MAP_WIDTH = 30;
-export const DEFAULT_MAP_HEIGHT = 20;
+export const DEFAULT_MAP_WIDTH = 6;
+export const DEFAULT_MAP_HEIGHT = 5;
