@@ -14,6 +14,8 @@
         <br />
         Mood: {{ citizen.mood }}
         <br />
+        Action: {{ citizen.action?.name }}
+        <br />
         Education: {{ citizen.educationLevel }}
         <br />
         Position: ({{ citizen.x }}, {{ citizen.y }})

@@ -1,6 +1,6 @@
-import { markRaw, ref } from "vue";
 import { faker } from "@faker-js/faker";
-
+import Rest from "@/core/actions/rest";
+import Move from "@/core/models/Move";
 
 const MOODS = ['Happy', 'Neutral', 'Sad', 'Stressed', 'Content'];
 const EDUCATION_LEVELS = ['None', 'High School', 'College', 'Graduate'];
@@ -20,44 +20,12 @@ class Citizen {
     this.y = 0;
     // Tile and Building IDs
     this.currentTile = null; // Stores the Tile object citizen is currently on
-    this.currentAction = null;
+    this.action = null;
     this.targetTile = null; // Stores the target Tile object
     this.homeBuildingId = null;
     this.workBuildingId = null;
     this.path = []; // Will store a Path object or null
     this.currentPathIndex = 0;
-  }
-
-  move(context) {
-    // Ensure citizen has a current tile. If not, try to place them or log error.
-    if (!this.currentTile) {
-      this.currentTile = context.mapManager.getRandomTile();
-      return;
-    }
-    if (!this.targetTile) {
-      this.targetTile = context.mapManager.getRandomTile();
-      if (this.targetTile.id === this.currentTile.id) {
-        this.targetTile = null;
-        return;
-      }
-      return;
-    }
-    if (!this.path.length) {
-      this.path = context.pathManager.findPath(this.currentTile.id, this.targetTile.id);
-      //console.log(`Citizen ${this.id} found path:`, this.path);
-      return;
-    }
-    this.currentPathIndex++;
-    if (this.currentPathIndex >= this.path.length) {
-      this.currentPathIndex = 0;
-      this.path = [];
-      this.currentTile = this.targetTile;
-      this.targetTile = null;
-      return;
-    }
-    const point = this.path[this.currentPathIndex];
-    this.x = point.x;
-    this.y = point.y;
   }
 
   getInfo() {
@@ -68,24 +36,19 @@ class Citizen {
     );
   }
 
-  decideWhereToGo(context) {
-    const randomTarget = context.mapManager.getRandomTile();
-    if (!randomTarget) {
-      // console.warn(`Citizen ${this.id} could not find a random tile to target.`);
-      this.targetTile = null;
-      this.path = [];
-      return;
-    }
-    this.targetTile = randomTarget;
+  resetAction() {
+    this.action = null;
   }
 
   update(context) {
-    if (!this.currentAction) {
-      this.currentAction = 'move';
-      this.move(context);
-    } else if (this.currentAction === 'move') {
-      this.move(context);
+    if (!this.action) {
+      // choose action from the list
+      const actions = [Move, Rest];
+      const Action = actions[Math.floor(Math.random() * actions.length)];
+      this.action = new Action(this);
+      return;
     }
+    this.action.update(context);
   } // This is the correct closing brace for the update method.
 }
 
