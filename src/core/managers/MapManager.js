@@ -44,7 +44,7 @@ class MapManager {
       for (let x = 0; x < this.width; x++) {
         const randomTerrain =
           terrainValues[Math.floor(Math.random() * terrainValues.length)];
-        flatTiles.push(new Tile(x, y, randomTerrain.name, randomTerrain.isWalkable, randomTerrain.terrainCost));
+        flatTiles.push(new Tile(x, y, randomTerrain.name, randomTerrain.isWalkable, randomTerrain.terrainCost, this.tileSize));
       }
     }
     console.log("1D Tiles initialized, count:", flatTiles.length);
@@ -66,6 +66,11 @@ class MapManager {
     if (y > 0) neighbors.push({ x, y: y - 1 });
     if (y < this.height - 1) neighbors.push({ x, y: y + 1 });
     return neighbors;
+  }
+
+  getTileById(tileId) {
+    if (!tileId) return null;
+    return this.tiles.value.find(tile => tile.id === tileId);
   }
 }
 

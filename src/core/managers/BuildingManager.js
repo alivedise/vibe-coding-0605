@@ -4,12 +4,9 @@ import Building from "@/core/models/Building";
 import { faker } from "@faker-js/faker";
 
 class BuildingManager {
-  constructor(mapManager) {
+  constructor() {
     console.log("BuildingManager initialized");
     this.buildings = ref([]);
-    this.mapManager = mapManager; // Store the mapManager instance
-    this.mapWidth = mapManager.width;
-    this.mapHeight = mapManager.height;
     // Pass the mapManager (as part of a minimal context) to placeInitialBuildings
   }
 

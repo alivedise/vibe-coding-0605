@@ -14,8 +14,8 @@ class GameStateManager {
     this.resourceManager = new ResourceManager();
     this.mapManager = new MapManager();
     // BuildingManager needs map dimensions and mapData (terrain) for placement logic
-    this.buildingManager = new BuildingManager(this.mapManager);
-    this.pathManager = new PathManager(this.mapManager, this.buildingManager);
+    this.buildingManager = new BuildingManager();
+    this.pathManager = new PathManager();
     this.citizenManager = new CitizenManager();
     this.companyManager = new CompanyManager();
     this.vehicleManager = new VehicleManager();
@@ -41,6 +41,7 @@ class GameStateManager {
     this.productManager?.update(context);
     this.recipeManager?.update(context);
     this.buildingManager?.update(context);
+    this.pathManager?.update(context);
   }
 
   // Method to gather context from all managers

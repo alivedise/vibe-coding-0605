@@ -1,7 +1,7 @@
 // src/core/models/Tile.js
 
 export class Tile {
-  constructor(x, y, type = 'grass', isWalkable = true, terrainCost = 1) {
+  constructor(x, y, type = 'grass', isWalkable = true, terrainCost = 1, tileSize = 20) {
     this.id = `${x}_${y}`;
     this.x = x;
     this.y = y;
@@ -10,12 +10,20 @@ export class Tile {
     this.terrainCost = terrainCost; // Cost for pathfinding
     this.buildingId = null; // ID of the building on this tile, if any
     this.isOccupied = false; // Generic flag if something (other than a building part of the tile type) is on it
+    this.tileSize = tileSize;
   }
 
   setBuilding(buildingId) {
     this.buildingId = buildingId;
     this.isWalkable = false; // Typically, building tiles are not walkable directly
     this.type = 'building'; // Or a more specific building type if needed
+  }
+
+  getCenterPoint() {
+    return {
+      x: this.x * this.tileSize + this.tileSize / 2,
+      y: this.y * this.tileSize + this.tileSize / 2,
+    };
   }
 
   get hasBuilding() {

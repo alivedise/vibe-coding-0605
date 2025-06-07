@@ -34,12 +34,12 @@ class CitizenManager {
 
   trySpawnCitizen(context) {
     if (this.citizens.value.length >= 3) {
-      console.log('Maximum citizens reached. Not spawning new citizen.');
+      // console.log('Maximum citizens reached. Not spawning new citizen.');
       return;
     }
     const randomTile = context.mapManager.getRandomTile();
     if (!randomTile) {
-      console.error('Failed to get random tile for citizen spawn.');
+      // console.error('Failed to get random tile for citizen spawn.');
       return;
     }
     const newCitizen = new Citizen();

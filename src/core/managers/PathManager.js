@@ -1,15 +1,17 @@
 // src/core/managers/PathManager.js
 import { WeightedGraph } from "@/graph/dijkstra";
+import Path from '@/core/models/Path';
 
 class PathManager {
-  constructor() {
-    this.pathMap = new Map();
-    this.paths = [];
+  constructor() { // Added mapManager dependency
+    this.pathMap = new Map(); // Consider if this is still needed or if cache is per-Path object
+    this.paths = []; // Consider if this is still needed
     this.graph = null;
+    console.log("PathManager initialized with MapManager");
   }
 
   update(context) {
-    if (!this.graph && context.mapManager.tiles.value.length > 0) {
+    if (!this.graph) {
       this.constructPaths(context);
     }
   }
@@ -17,6 +19,10 @@ class PathManager {
   constructPaths(context) {
     const graph = new WeightedGraph();
     const tiles = context.mapManager.tiles.value;
+    if (!tiles || tiles.length === 0) {
+      console.error('No tiles found in mapManager');
+      return;
+    }
     for (let i = 0; i < tiles.length; i++) {
       const tile = tiles[i];
       graph.addVertex(tile.id);
@@ -30,17 +36,34 @@ class PathManager {
         const neighborTile = context.mapManager.getTileAt(neighbor.x, neighbor.y);
         if (neighborTile) {
           graph.addEdge(tile.id, neighborTile.id, 1);
+          const start = tile.getCenterPoint();
+          const end = neighborTile.getCenterPoint();
+          const path = new Path(start.x, start.y, end.x, end.y);
+          this.paths.push(path);
+          this.pathMap.set(`${tile.id}/${neighborTile.id}`, path);
         }
       }
     }
     this.graph = graph;
   }
 
-  findPath(start, end) {
+  findPath(startTileId, endTileId) {
     if (!this.graph) {
-      return [];
+      console.warn('[PathManager] Graph not constructed. Cannot find path.');
+      return null;
     }
-    return this.graph.Dijkstra(start, end);
+    if (!startTileId || !endTileId) {
+      console.warn('[PathManager] Start or end tile ID is missing.');
+      return null;
+    }
+
+    const paths = this.graph.Dijkstra(startTileId, endTileId);
+    console.log(paths);
+    return paths.map((path, index) => {
+      if (index === paths.length - 1) return;
+      console.log(`Path ${path} to ${paths[index + 1]}`);
+      return this.pathMap.get(`${path}/${paths[index + 1]}`);
+    }).filter((path) => path !== undefined).map((path) => path.points).flat();
   }
 }
 

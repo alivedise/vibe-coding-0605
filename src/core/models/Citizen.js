@@ -24,25 +24,36 @@ class Citizen {
     this.targetTile = null; // Stores the target Tile object
     this.homeBuildingId = null;
     this.workBuildingId = null;
-    this.path = ref([]);
-    this.currentPathIndex = ref(0);
+    this.path = []; // Will store a Path object or null
+    this.currentPathIndex = 0;
   }
 
   move(context) {
+    // Ensure citizen has a current tile. If not, try to place them or log error.
     if (!this.currentTile) {
       this.currentTile = context.mapManager.getRandomTile();
+      return;
     }
     if (!this.targetTile) {
-      this.decideWhereToGo(context)
+      this.targetTile = context.mapManager.getRandomTile();
+      return;
     }
-    if (!this.path.value) {
-      this.path.value = context.pathManager.findPath(this.currentTile.id, this.targetTile.id);
+    if (!this.path.length) {
+      this.path = context.pathManager.findPath(this.currentTile.id, this.targetTile.id);
+      console.log(`Citizen ${this.id} found path:`, this.path);
+      return;
     }
-    if (this.path.value.length > 0) {
-      this.path.value.forEach((tileId) => {
-        console.log(tileId);
-      });
+    this.currentPathIndex++;
+    if (this.currentPathIndex >= this.path.length) {
+      this.currentPathIndex = 0;
+      this.path = [];
+      this.currentTile = this.targetTile;
+      this.targetTile = null;
+      this.decideWhereToGo(context);
+      return;
     }
+    this.x.value = this.path[this.currentPathIndex][0];
+    this.y.value = this.path[this.currentPathIndex][1];
   }
 
   getInfo() {
