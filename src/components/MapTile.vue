@@ -1,27 +1,27 @@
 <template>
-  <div class="map-block" :style="{ backgroundColor: blockColor }">
-    <!-- {{ terrainType }} -->
+  <div class="map-tile" :style="{ backgroundColor: tileColor }">
+    <!-- {{ tile.type }} ({{tile.x}}, {{tile.y}}) -->
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { TERRAIN_COLORS } from '@/constants/terrainTypes';
+import { computed } from "vue";
+import { TERRAIN_COLORS } from "@/constants/terrainTypes";
 
 const props = defineProps({
-  terrainType: {
-    type: String,
+  tile: {
+    type: Object,
     required: true,
   },
 });
 
-const blockColor = computed(() => {
-  return TERRAIN_COLORS[props.terrainType] || 'white'; // Default to white if type is unknown
+const tileColor = computed(() => {
+  return TERRAIN_COLORS[props.tile.type] || "white"; // Default to white if type is unknown
 });
 </script>
 
 <style scoped>
-.map-block {
+.map-tile {
   /* width and height will be set by style prop from WorldMap.vue */
   /* default: 20px; */
   /* default: 20px; */

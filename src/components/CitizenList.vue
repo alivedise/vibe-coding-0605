@@ -1,14 +1,14 @@
 <template>
   <div class="citizen-list-container">
-    <h3>Citizens ({{ citizens.length }})</h3>
-    <div v-if="citizens.length === 0" class="no-citizens">
-      No citizens yet.
-    </div>
+    <h3>Citizens ({{ gameStateManager.citizenManager.citizens.length }})</h3>
+    <div v-if="gameStateManager.citizenManager.citizens.value.length === 0" class="no-citizens">No citizens yet.</div>
     <ul v-else class="citizen-list">
-      <li v-for="citizen in citizens" :key="citizen.id" class="citizen-item">
-        <strong>{{ citizen.name }}</strong> ({{ citizen.gender?.charAt(0).toUpperCase() }}, {{ citizen.age }})
+      <li v-for="citizen in gameStateManager.citizenManager.citizens.value" :key="citizen.id" class="citizen-item">
+        <strong>{{ citizen.name }}</strong> ({{
+          citizen.gender?.charAt(0).toUpperCase()
+        }}, {{ citizen.age }})
         <br />
-        ID: <span class="citizen-id">{{ citizen.id.substring(0, 8) }}</span>
+        ID: <span class="citizen-id">{{ citizen.id?.substring(0, 8) }}</span>
         <br />
         Occupation: {{ citizen.occupation }}
         <br />
@@ -18,22 +18,30 @@
         <br />
         Position: ({{ citizen.x }}, {{ citizen.y }})
         <br />
-        Target: ({{ citizen.targetGridX }}, {{ citizen.targetGridY }})
+        Target: ({{ citizen.targetTile ? citizen.targetTile.x : 'N/A' }}, {{ citizen.targetTile ? citizen.targetTile.y : 'N/A' }})
         <br />
-        Target Building ID: <span class="citizen-id">{{ citizen.targetBuildingId ? citizen.targetBuildingId.substring(0, 8) : 'N/A' }}</span>
+        Target Tile ID:
+        <span class="citizen-id">{{
+          citizen.targetTile?.id?.substring(0, 8)
+            ? citizen.targetTile.id.substring(0, 8)
+            : "N/A"
+        }}</span>
         <br />
-        Home ID: <span class="citizen-id">{{ citizen.homeBuildingId ? citizen.homeBuildingId.substring(0, 8) : 'N/A' }}</span>
+        Home ID:
+        <span class="citizen-id">{{
+          citizen.homeBuildingId
+            ? citizen.homeBuildingId.substring(0, 8)
+            : "N/A"
+        }}</span>
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { inject, computed } from 'vue';
+import { inject } from "vue";
 
-const gameStateManager = inject('gameStateManager');
-
-const citizens = computed(() => gameStateManager.citizenManager.citizensList.value);
+const gameStateManager = inject("gameStateManager");
 </script>
 
 <style scoped>
@@ -45,7 +53,7 @@ const citizens = computed(() => gameStateManager.citizenManager.citizensList.val
   max-height: 400px;
   overflow-y: auto;
   font-family: Arial, sans-serif;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .citizen-list-container h3 {
@@ -81,7 +89,7 @@ const citizens = computed(() => gameStateManager.citizenManager.citizensList.val
 }
 
 .citizen-id {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 0.85em;
   color: #555;
 }
