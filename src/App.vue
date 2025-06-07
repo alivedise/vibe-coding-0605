@@ -28,7 +28,7 @@ const gameStateManager = new GameStateManager();
 provide("gameStateManager", gameStateManager);
 
 let gameLoopIntervalId;
-const GAME_TICK_INTERVAL_MS = 1000; // e.g., tick every second
+const GAME_TICK_INTERVAL_MS = 1000/60; // e.g., tick every second
 
 onMounted(() => {
   console.log("App.vue mounted, starting game loop.");

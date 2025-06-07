@@ -43,9 +43,6 @@ class CitizenManager {
       return;
     }
     const newCitizen = new Citizen();
-    newCitizen.currentTile = randomTile;
-    newCitizen.x.value = randomTile.x * context.mapManager.cellSize + context.mapManager.cellSize / 2;
-    newCitizen.y.value = randomTile.y * context.mapManager.cellSize + context.mapManager.cellSize / 2;
     this.addCitizen(newCitizen);
     console.log(`Spawned new citizen ${newCitizen.name} at (${randomTile.x}, ${randomTile.y})`);
   }

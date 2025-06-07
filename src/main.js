@@ -16,11 +16,3 @@ app.provide("gameStateManager", gameStateManager);
 
 app.mount("#app");
 
-// Basic game loop
-function gameLoop(timestamp) {
-  gameStateManager.tick(timestamp);
-  requestAnimationFrame(gameLoop);
-}
-
-// Start the game loop
-requestAnimationFrame(gameLoop);

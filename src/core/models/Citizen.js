@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { markRaw, ref } from "vue";
 import { faker } from "@faker-js/faker";
 
 
@@ -16,8 +16,8 @@ class Citizen {
     this.educationLevel = EDUCATION_LEVELS[Math.floor(Math.random() * EDUCATION_LEVELS.length)];
 
     // Reactive pixel coordinates for smooth animation - initialized in CitizenManager
-    this.x = ref(0);
-    this.y = ref(0);
+    this.x = 0;
+    this.y = 0;
     // Tile and Building IDs
     this.currentTile = null; // Stores the Tile object citizen is currently on
     this.currentAction = null;
@@ -36,11 +36,15 @@ class Citizen {
     }
     if (!this.targetTile) {
       this.targetTile = context.mapManager.getRandomTile();
+      if (this.targetTile.id === this.currentTile.id) {
+        this.targetTile = null;
+        return;
+      }
       return;
     }
     if (!this.path.length) {
       this.path = context.pathManager.findPath(this.currentTile.id, this.targetTile.id);
-      console.log(`Citizen ${this.id} found path:`, this.path);
+      //console.log(`Citizen ${this.id} found path:`, this.path);
       return;
     }
     this.currentPathIndex++;
@@ -49,11 +53,11 @@ class Citizen {
       this.path = [];
       this.currentTile = this.targetTile;
       this.targetTile = null;
-      this.decideWhereToGo(context);
       return;
     }
-    this.x.value = this.path[this.currentPathIndex][0];
-    this.y.value = this.path[this.currentPathIndex][1];
+    const point = this.path[this.currentPathIndex];
+    this.x = point.x;
+    this.y = point.y;
   }
 
   getInfo() {
@@ -69,7 +73,7 @@ class Citizen {
     if (!randomTarget) {
       // console.warn(`Citizen ${this.id} could not find a random tile to target.`);
       this.targetTile = null;
-      this.path.value = [];
+      this.path = [];
       return;
     }
     this.targetTile = randomTarget;

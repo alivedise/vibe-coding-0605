@@ -18,7 +18,9 @@
         <br />
         Position: ({{ citizen.x }}, {{ citizen.y }})
         <br />
-        Target: ({{ citizen.targetTile ? citizen.targetTile.x : 'N/A' }}, {{ citizen.targetTile ? citizen.targetTile.y : 'N/A' }})
+        Current Path Index: {{ citizen.currentPathIndex }}
+        <br />
+        Current Path: {{ citizen.path.length }}
         <br />
         Target Tile ID:
         <span class="citizen-id">{{

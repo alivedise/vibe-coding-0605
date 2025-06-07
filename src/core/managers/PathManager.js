@@ -58,10 +58,10 @@ class PathManager {
     }
 
     const paths = this.graph.Dijkstra(startTileId, endTileId);
-    console.log(paths);
+    // console.log(paths);
     return paths.map((path, index) => {
       if (index === paths.length - 1) return;
-      console.log(`Path ${path} to ${paths[index + 1]}`);
+      // console.log(`Path ${path} to ${paths[index + 1]}`);
       return this.pathMap.get(`${path}/${paths[index + 1]}`);
     }).filter((path) => path !== undefined).map((path) => path.points).flat();
   }
