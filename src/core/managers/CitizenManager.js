@@ -32,7 +32,7 @@ class CitizenManager {
   }
 
   trySpawnCitizen(context) {
-    if (this.citizens.length >= MAX_CITIZENS) {
+    if (this.citizens.length >= context.configurationManager.MAX_CITIZENS) {
       // console.log('Maximum citizens reached. Not spawning new citizen.');
       return;
     }

@@ -8,7 +8,7 @@ class VehicleManager {
 
   update(context) {
     this.vehicles.forEach((vehicle) => vehicle.update(context));
-    if (this.vehicles.length < 5) {
+    if (this.vehicles.length < context.configurationManager.MAX_VEHICLES) {
       this.trySpawnVehicle(context);
     }
   }

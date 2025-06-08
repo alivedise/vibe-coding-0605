@@ -9,6 +9,7 @@ import RecipeManager from "./RecipeManager";
 import PathManager from "./PathManager";
 import JobManager from "./JobManager";
 import CanvasManager from "./CanvasManager";
+import ConfigurationManager from "./ConfigurationManager";
 import { ref } from 'vue';
 
 class GameStateManager {
@@ -32,6 +33,7 @@ class GameStateManager {
     this.productManager = new ProductManager();
     this.recipeManager = new RecipeManager();
     this.canvasManager = new CanvasManager();
+    this.configurationManager = new ConfigurationManager();
     window.gameStateManager = this;
 
     // this.initializeManagers(); // We can directly initialize in constructor for now
@@ -88,6 +90,7 @@ class GameStateManager {
       currentTimestamp: this.currentTimestamp,
       lastTimestamp: this.lastTimestamp,
       canvasManager: this.canvasManager,
+      configurationManager: this.configurationManager,
       // Add other relevant game state data here
     };
   }

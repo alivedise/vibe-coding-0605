@@ -134,7 +134,11 @@ class Citizen {
       // TODO: Action selection needs refinement.
       // The current Move action instantiation might be incorrect based on Move model/action definition.
       // For now, keeping existing logic.
-      const actions = [Move, Rest, Work, Purchase];
+      const actions = [Move, Rest, Purchase];
+      if (this.jobId) {
+        actions.push(Work);
+      }
+      
       const ActionClass = actions[Math.floor(Math.random() * actions.length)];
       
       // Placeholder for more complex action instantiation if needed
