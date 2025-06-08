@@ -4,12 +4,11 @@ class Product {
   constructor(job) {
     this.id = faker.string.uuid();
     this.carrierId = null;
+    this.name = faker.commerce.productName();
     if (!job) {
-      this.name = faker.commerce.productName();
       this.producedByJobId = null;
       this.producedByCompanyId = null;
     } else {
-      this.name = `Product of ${job.title}`;
       this.producedByJobId = job.id;
       this.producedByCompanyId = job.companyId;
     }

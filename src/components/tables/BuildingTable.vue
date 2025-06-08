@@ -1,6 +1,30 @@
 <template>
   <div class="building-table-container">
-    <DataTable :value="buildings" :paginator="true" :rows="10" responsiveLayout="scroll" stripedRows>
+    <Sidebar v-model:visible="displaySidebar" position="right" class="p-sidebar-md">
+      <template #header>
+        <h3>Building Details</h3>
+      </template>
+      <div v-if="selectedBuilding">
+        <p><strong>ID:</strong> {{ selectedBuilding.id }}</p>
+        <p><strong>Type:</strong> {{ selectedBuilding.type }}</p>
+        <p><strong>Location (X, Y):</strong> {{ selectedBuilding.x }}, {{ selectedBuilding.y }}</p>
+        <p><strong>Size (W x H):</strong> {{ selectedBuilding.width }} x {{ selectedBuilding.height }}</p>
+        <p><strong>Company ID:</strong> {{ selectedBuilding.companyId ? selectedBuilding.companyId : 'N/A' }}</p>
+        <p><strong>Tile ID:</strong> {{ selectedBuilding.tileId ? selectedBuilding.tileId : 'N/A' }}</p>
+        
+        <h5>Stockings:</h5>
+        <ul v-if="selectedBuilding.stockings && selectedBuilding.stockings.length > 0">
+          <li v-for="(stocking, index) in selectedBuilding.stockings" :key="stocking.id || index">
+            {{ stocking?.name || 'Unknown Product' }}
+          </li>
+        </ul>
+        <p v-else>No stockings.</p>
+      </div>
+    </Sidebar>
+    <DataTable :value="buildings"
+      selectionMode="single"
+      v-model:selection="selectedBuildingForTable"
+      @row-select="onRowSelect" :paginator="true" :rows="10" responsiveLayout="scroll" stripedRows>
       <template #header>
         <div class="table-header">
           Building Details
@@ -42,18 +66,28 @@
 </template>
 
 <script setup>
-import { computed, inject } from 'vue';
+import { ref, inject } from 'vue';
+import Sidebar from 'primevue/sidebar';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 const gameStateManager = inject('gameStateManager');
 
-const buildings = computed(() => {
-  if (gameStateManager && gameStateManager.buildingManager) {
-    return gameStateManager.buildingManager.buildings;
-  }
-  return [];
-});
+const buildings = gameStateManager.buildingManager.buildings;
+const selectedBuilding = ref(null);
+const selectedBuildingForTable = ref(null);
+const displaySidebar = ref(false);
+
+const onRowSelect = (event) => {
+  selectedBuilding.value = event.data;
+  displaySidebar.value = true;
+};
+
+const closeSidebar = () => { // Though not explicitly called by a button, good to have if needed
+  displaySidebar.value = false;
+  selectedBuilding.value = null;
+  selectedBuildingForTable.value = null;
+};
 
 </script>
 

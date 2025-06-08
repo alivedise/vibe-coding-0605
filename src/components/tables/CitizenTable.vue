@@ -1,7 +1,34 @@
 <template>
   <div class="citizen-table-container">
+    <Sidebar v-model:visible="displaySidebar" position="right" class="p-sidebar-md">
+      <template #header>
+        <h3>Citizen Details</h3>
+      </template>
+      <div v-if="selectedCitizen">
+        <p><strong>ID:</strong> {{ selectedCitizen.id }}</p>
+        <p><strong>Name:</strong> {{ selectedCitizen.name }}</p>
+        <p><strong>Age:</strong> {{ selectedCitizen.age }}</p>
+        <p><strong>Occupation:</strong> {{ selectedCitizen.occupation || 'N/A' }}</p>
+        <p><strong>Money:</strong> ${{ selectedCitizen.money.toFixed(2) }}</p>
+        <p><strong>Action:</strong> {{ selectedCitizen.action?.name || 'Idle' }}</p>
+        <p><strong>Current Tile ID:</strong> {{ selectedCitizen.currentTile?.id || 'N/A' }}</p>
+        <p><strong>Target Tile ID:</strong> {{ selectedCitizen.targetTile?.id || 'N/A' }}</p>
+        <p><strong>Skills:</strong> {{ selectedCitizen.skills.join(', ') }}</p>
+        
+                <h5>Belongings:</h5>
+        <ul v-if="selectedCitizen.belongings && selectedCitizen.belongings.length > 0">
+          <li v-for="item in selectedCitizen.belongings" :key="item.id">
+            {{ item.name }} (Value: ${{ item.value }})
+          </li>
+        </ul>
+        <p v-else>No belongings.</p>
+      </div>
+    </Sidebar>
     <DataTable
       :value="citizens"
+      selectionMode="single"
+      v-model:selection="selectedCitizenForTable"
+      @row-select="onRowSelect"
       :paginator="true"
       :rows="10"
       responsiveLayout="scroll"
@@ -40,19 +67,28 @@
 
 <script setup>
 import { inject, ref } from 'vue';
+import Sidebar from 'primevue/sidebar';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 
 const gameStateManager = inject('gameStateManager');
 
-const citizens = ref([]);
+const citizens = gameStateManager.citizenManager.citizens;
+const selectedCitizen = ref(null); // For the sidebar
+const selectedCitizenForTable = ref(null); // For DataTable v-model:selection
+const displaySidebar = ref(false);
 
-const updateCitizens = () => {
-  citizens.value = gameStateManager.citizenManager.citizens;
+const onRowSelect = (event) => {
+  selectedCitizen.value = event.data; // event.data is the selected row data
+  displaySidebar.value = true;
 };
 
-updateCitizens();
+const closeSidebar = () => {
+  displaySidebar.value = false;
+  selectedCitizen.value = null;
+  selectedCitizenForTable.value = null; // Clear table selection as well
+};
 
 </script>
 
