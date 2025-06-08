@@ -23,16 +23,20 @@ class Vehicle {
     this.speed = 1; //faker.number.int({ min: 2, max: 5 }); // Speed in pixels per update tick. Adjust as needed.
     this.capacity = faker.number.int({ min: 1, max: 5 }); // Capacity of the vehicle
     this.stockings = [];
+    this.carryingId = null;
   }
 
   loadCargo() {
+    if (!this.currentTile) {
+      return;
+    }
     const stocking = this.currentTile.fetchStocking();
     if (!stocking) {
       return;
     }
     //console.log("Loading cargo:", stocking, "from tile:", this.currentTile);
-    stocking.carryBy(this);
     this.stockings.push(stocking);
+    this.carryingId = stocking.id;
   }
 
   unloadCargo() {
@@ -46,6 +50,7 @@ class Vehicle {
     // console.log("Unloading cargo:", stocking, "to tile:", this.currentTile);
     stocking.carryBy(this.currentTile);
     this.currentTile.storeStocking(stocking);
+    this.carryingId = null;
   }
 
   hasStockings() {
@@ -60,11 +65,11 @@ class Vehicle {
   }
 
   beforeMove(context) {
-    this.unloadCargo();
+    this.loadCargo();
   }
 
   afterMove(context) {
-    this.loadCargo();
+    this.unloadCargo();
   }
 
   update(context) {

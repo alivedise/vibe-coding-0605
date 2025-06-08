@@ -11,7 +11,7 @@ class MapManager {
     console.log("MapManager initialized");
     this.width = width;
     this.height = height;
-    this.tileSize = 20; // Default cell size in pixels, matches WorldMap.vue
+    this.tileSize = 100; // Default cell size in pixels, matches WorldMap.vue
     this.tiles = ref(this.initializeTiles());
   }
 

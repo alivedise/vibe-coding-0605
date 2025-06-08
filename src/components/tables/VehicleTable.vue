@@ -13,9 +13,9 @@
           {{ slotProps.data.ownerId ? slotProps.data.ownerId.substring(0, 8) + '...' : 'N/A' }}
         </template>
       </Column>
-      <Column field="status" header="Stockings" :sortable="true">
+      <Column field="carryingId" header="Carrying" :sortable="true">
         <template #body="slotProps">
-          {{ slotProps.data.hasStockings() ? 'Yes' : 'No' }}
+          {{ slotProps.data.carryingId ? slotProps.data.carryingId.substring(0, 8) + '...' : 'N/A' }}
         </template>
       </Column>
       <Column field="currentTile" header="Current Tile" :sortable="true">

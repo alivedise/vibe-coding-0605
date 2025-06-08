@@ -22,7 +22,7 @@ export class Tile {
     if (!this.lastSpawn) {
       this.lastSpawn = context.currentTimestamp;
     }
-    if (context.currentTimestamp - this.lastSpawn >= 1000) {
+    if (context.currentTimestamp - this.lastSpawn >= 1000 && this.stockings.length === 0 && this.buildingId === null) {
       this.spawnProduct(context);
       this.lastSpawn = context.currentTimestamp;
     }

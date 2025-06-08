@@ -158,7 +158,7 @@ main {
 .game-container {
   border: 1px solid #ccc;
   /* flex-grow: 1; */ /* Replaced with specific height/flex basis */
-  height: 200px; /* Example: Map takes 60% of the layout-container height */
+  height: 500px; /* Example: Map takes 60% of the layout-container height */
   width: 100%; /* Map takes full width */
 }
 

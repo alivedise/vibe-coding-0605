@@ -24,6 +24,7 @@
         v-for="building in (gameStateManager && gameStateManager.buildingManager && gameStateManager.buildingManager.buildings.value) || []"
         :key="building.id"
         :building="building"
+        :tile-size="gameStateManager?.mapManager?.tileSize || 20"
       />
       <!-- Render citizens -->
       <MapCitizen

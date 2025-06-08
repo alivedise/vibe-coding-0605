@@ -52,11 +52,6 @@ import { inject, computed } from "vue";
 const gameStateManager = inject("gameStateManager");
 
 const displayedCitizens = computed(() => {
-  // Access tickCounter to make this computed property reactive to game ticks
-  if (gameStateManager && gameStateManager.tickCounter) {
-    // eslint-disable-next-line no-unused-vars
-    const _tick = gameStateManager.tickCounter.value;
-  }
   if (gameStateManager && gameStateManager.citizenManager && gameStateManager.citizenManager.citizens.value instanceof Map) {
     // Convert Map values to an array
     return Array.from(gameStateManager.citizenManager.citizens.value.values());
