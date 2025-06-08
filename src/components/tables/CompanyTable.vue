@@ -26,7 +26,7 @@
       </Column>
       <Column header="Stock">
         <template #body="slotProps">
-          {{ slotProps.data.stockings.length }}
+          {{ slotProps.data.building.stockings.length }}
         </template>
       </Column>
     </DataTable>

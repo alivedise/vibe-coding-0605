@@ -59,7 +59,7 @@ class Citizen {
     this.isLookingForJob = false;
     // Assuming company objects might have a buildingId property
     this.workBuildingId = company.buildingId || null; 
-    console.log(`${this.name} accepted job: ${job.title} at ${company.name}. WorkBuildingId: ${this.workBuildingId}`);
+    // console.log(`${this.name} accepted job: ${job.title} at ${company.name}. WorkBuildingId: ${this.workBuildingId}`);
   }
 
   quitJob(context) {
@@ -69,7 +69,7 @@ class Citizen {
       // If we want it to reappear, the company would need a method to re-list it,
       // or JobManager would handle it.
       // Example: context.companyManager.findCompanyById(this.companyId)?.reOpenJob(this.jobId);
-      console.log(`${this.name} quit job: ${this.occupation} at company ${this.companyId}`);
+      // console.log(`${this.name} quit job: ${this.occupation} at company ${this.companyId}`);
     }
     this.occupation = "Unemployed";
     this.jobId = null;

@@ -16,7 +16,7 @@
       <Column field="companyName" header="Produced by Company" :sortable="true"></Column>
       <Column field="producedByJobId" header="Job ID" :sortable="true">
         <template #body="slotProps">
-          {{ slotProps.data.producedByJobId.substring(0,8) }}...
+          {{ slotProps.data.producedByJobId?.substring(0,8) }}...
         </template>
       </Column>
       <Column field="creationDate" header="Created" :sortable="true">
@@ -36,14 +36,20 @@ import Column from 'primevue/column';
 const gameStateManager = inject('gameStateManager');
 
 const allProducts = computed(() => {
-  if (gameStateManager && gameStateManager.companyManager && gameStateManager.companyManager.companies.value) {
-    return gameStateManager.companyManager.companies.value.reduce((acc, company) => {
-      const productsWithCompanyInfo = company.stockings.map(product => ({
+  if (gameStateManager && gameStateManager.productManager && gameStateManager.productManager.products.value && gameStateManager.companyManager) {
+    return gameStateManager.productManager.products.value.map(product => {
+      let companyName = 'N/A';
+      if (product.producedByCompanyId) {
+        const company = gameStateManager.companyManager.getCompanyById(product.producedByCompanyId);
+        if (company) {
+          companyName = company.name;
+        }
+      }
+      return {
         ...product,
-        companyName: company.name, // Add company name for display
-      }));
-      return acc.concat(productsWithCompanyInfo);
-    }, []);
+        companyName: companyName,
+      };
+    });
   }
   return [];
 });

@@ -28,10 +28,19 @@
           <TabPanel header="Vehicles">
             <VehicleTable />
           </TabPanel>
+          <TabPanel header="Buildings">
+            <BuildingTable />
+          </TabPanel>
+          <TabPanel header="Map Tiles">
+            <TileTable />
+          </TabPanel>
         </TabView>
       </div>
     </div>
-    <FpsCounter />
+    <div class="controls-container">
+      <Button :label="pauseButtonLabel" @click="togglePause" />
+      <FpsCounter />
+    </div>
   </main>
 </template>
 
@@ -43,11 +52,14 @@ import CompanyTable from "@/components/tables/CompanyTable.vue";
 import JobTable from "@/components/tables/JobTable.vue";
 import ProductTable from "@/components/tables/ProductTable.vue";
 import VehicleTable from "@/components/tables/VehicleTable.vue";
+import BuildingTable from "@/components/tables/BuildingTable.vue";
+import TileTable from "@/components/tables/TileTable.vue";
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import Button from 'primevue/button';
 import FpsCounter from "@/components/FpsCounter.vue";
 import GameStateManager from "@/core/managers/GameStateManager";
-import { provide, onMounted, onUnmounted } from "vue";
+import { provide, onMounted, onUnmounted, computed } from "vue";
 
 const gameStateManager = new GameStateManager();
 provide("gameStateManager", gameStateManager);
@@ -66,9 +78,35 @@ onUnmounted(() => {
   console.log("App.vue unmounted, clearing game loop.");
   clearInterval(gameLoopIntervalId);
 });
+
+const pauseButtonLabel = computed(() => {
+  return gameStateManager.isPaused.value ? 'Resume' : 'Pause';
+});
+
+const togglePause = () => {
+  if (gameStateManager.isPaused.value) {
+    gameStateManager.resumeGame();
+  } else {
+    gameStateManager.pauseGame();
+  }
+};
 </script>
 
 <style scoped>
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 10vh;
+}
+
+header {
+  flex-shrink: 0; /* Prevent header from shrinking */
+  /* Add padding or height to header as needed */
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+}
+
 main {
   width: 100%; /* Ensure main content area takes full width */
   flex-grow: 1; /* Allow main to take available vertical space in #app flex container */
@@ -81,13 +119,24 @@ main {
   flex-direction: column; /* Changed from row to column */
   gap: 20px;
   /* align-items: flex-start; /* May not be needed or could be stretch */
-  height: calc(100vh - 100px); /* Example: Adjust based on header/footer height */
+  flex-grow: 1; /* Allow layout-container to take available space */
+  overflow-y: auto; /* Add scroll if content overflows */
+}
+
+.controls-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  border-top: 1px solid #ccc;
+  flex-shrink: 0; /* Prevent controls-container from shrinking */
 }
 
 .game-container {
   border: 1px solid #ccc;
   /* flex-grow: 1; */ /* Replaced with specific height/flex basis */
-  height: 60%; /* Example: Map takes 60% of the layout-container height */
+  height: 200px; /* Example: Map takes 60% of the layout-container height */
   width: 100%; /* Map takes full width */
 }
 

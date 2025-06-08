@@ -1,5 +1,7 @@
 // src/core/models/Tile.js
 
+import Product from "./Product";
+
 export class Tile {
   constructor(x, y, type = 'grass', isWalkable = true, terrainCost = 1, tileSize = 20) {
     this.id = `${x}_${y}`;
@@ -12,21 +14,52 @@ export class Tile {
     this.isOccupied = false; // Generic flag if something (other than a building part of the tile type) is on it
     this.tileSize = tileSize;
     this.stockings = [];
+    this.lastSpawn = null;
   }
 
-  fetchCargo() {
-    // move stocking from source tile to target tile
-    return this.stockings.shift();
+  update(context) {
+    // spawn product for testing purpose in a 1 second interval
+    if (!this.lastSpawn) {
+      this.lastSpawn = context.currentTimestamp;
+    }
+    if (context.currentTimestamp - this.lastSpawn >= 1000) {
+      this.spawnProduct(context);
+      this.lastSpawn = context.currentTimestamp;
+    }
   }
 
-  storeCargo(stocking) {
-    this.stockings.push(stocking);
+  spawnProduct(context) {
+    const newProduct = new Product();
+    context.productManager.registerProduct(newProduct);
+    this.storeStocking(newProduct);
+    // console.log(`Spawned new product ${newProduct.name} at tile (${this.x}, ${this.y})`);
   }
 
-  setBuilding(buildingId) {
-    this.buildingId = buildingId;
-    this.isWalkable = false; // Typically, building tiles are not walkable directly
-    this.type = 'building'; // Or a more specific building type if needed
+  fetchStocking() {
+    if (this.building) {
+      return this.building.fetchStocking();
+    } else {
+      return this.stockings.shift();
+    }
+  }
+
+  storeStocking(stocking) {
+    if (!stocking) {
+      console.error('No stocking provided to storeStocking method.');
+      return;
+    }
+    if (!this.building) {
+      console.log(`Storing stocking ${stocking.name} at tile (${this.x}, ${this.y})`);
+      this.stockings.push(stocking);
+      return;
+    }
+    console.log(`Storing stocking ${stocking.name} at tile (${this.x}, ${this.y}) to building ${this.building.id}`);
+    this.building.storeStocking(stocking);
+  }
+
+  setBuilding(building) {
+    this.buildingId = building.id;
+    this.building = building;
   }
 
   getCenterPoint() {
@@ -42,10 +75,7 @@ export class Tile {
 
   clearBuilding() {
     this.buildingId = null;
-    // Reset type and walkability based on underlying terrain or default
-    // This might need more sophisticated handling if tiles can revert to a previous state
-    this.type = 'grass'; // Default reversion
-    this.isWalkable = true;
+    this.building = null;
   }
 
   get traversable() {

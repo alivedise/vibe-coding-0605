@@ -20,16 +20,17 @@ class Vehicle {
     this.path = [];
     this.currentPathIndex = 0;
     this.targetTile = null; // Stores the target Tile object
-    this.speed = faker.number.int({ min: 2, max: 5 }); // Speed in pixels per update tick. Adjust as needed.
+    this.speed = 1; //faker.number.int({ min: 2, max: 5 }); // Speed in pixels per update tick. Adjust as needed.
     this.capacity = faker.number.int({ min: 1, max: 5 }); // Capacity of the vehicle
     this.stockings = [];
   }
 
   loadCargo() {
-    const stocking = this.currentTile.fetchCargo();
+    const stocking = this.currentTile.fetchStocking();
     if (!stocking) {
       return;
     }
+    console.log("Loading cargo:", stocking, "from tile:", this.currentTile);
     this.stockings.push(stocking);
   }
 
@@ -41,17 +42,18 @@ class Vehicle {
     if (!stocking) {
       return;
     }
-    this.currentTile.storeCargo(stocking);
+    console.log("Unloading cargo:", stocking, "to tile:", this.currentTile);
+    this.currentTile.storeStocking(stocking);
   }
 
-  getInfo() {
-    return (
-      `ID: ${this.id}, Type: ${this.type}, Model: ${this.modelName}, ` +
-      `Pos: (${this.x.toFixed(1)}, ${this.y.toFixed(1)}), Speed: ${this.speed}`
-    );
+  hasStockings() {
+    return this.stockings.length > 0;
   }
 
   resetAction() {
+    if (this.action && this.action instanceof Move) {
+      this.afterMove();
+    }
     this.action = null;
   }
 
@@ -66,6 +68,7 @@ class Vehicle {
   update(context) {
     if (!this.action) {
       this.action = new Move(this);
+      this.beforeMove(context);
     }
     this.action.update(context);
   }

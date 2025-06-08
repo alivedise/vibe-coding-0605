@@ -12,8 +12,17 @@ class Job {
     this.occupied = false;
     this.employeeId = null;
     this.progress = 0;
-    this.maxProgress = Math.floor(Math.random() * 100) + 1;
+    // this.maxProgress = Math.floor(Math.random() * 100) + 1;
+    this.maxProgress = 3; // debugging purpose
     // Later, we can add things like experienceLevel, employmentType (full-time, part-time), etc.
+  }
+
+  isDone() {
+    return this.progress >= this.maxProgress;
+  }
+
+  resetStatus() {
+    this.progress = 0;
   }
 
   // Example method
@@ -28,10 +37,6 @@ class Job {
 
   updateJobProgress() {
     this.progress++;
-    if (this.progress >= this.maxProgress) {
-      this.progress = 0;
-      this.company.releaseProduct(this);
-    }
   }
 }
 

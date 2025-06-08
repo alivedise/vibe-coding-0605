@@ -3,14 +3,20 @@ import { faker } from "@faker-js/faker";
 class Product {
   constructor(job) {
     this.id = faker.string.uuid();
-    this.name = `Product of ${job.title}`;
-    this.producedByJobId = job.id;
-    this.producedByCompanyId = job.companyId;
+    if (!job) {
+      this.name = faker.commerce.productName();
+      this.producedByJobId = null;
+      this.producedByCompanyId = null;
+    } else {
+      this.name = `Product of ${job.title}`;
+      this.producedByJobId = job.id;
+      this.producedByCompanyId = job.companyId;
+    }
     this.creationDate = new Date();
     // Example: Value could be related to job salary or a random commerce item price
     this.value = faker.commerce.price({ min: 10, max: 200, dec: 2 }); 
 
-    console.log(`New product created: ${this.name} (ID: ${this.id}) by company ${this.producedByCompanyId}`);
+    // console.log(`New product created: ${this.name} (ID: ${this.id}) by company ${this.producedByCompanyId}`);
   }
 
   getDetails() {

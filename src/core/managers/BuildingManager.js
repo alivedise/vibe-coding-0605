@@ -3,6 +3,8 @@ import { BUILDING_TYPES, BUILDING_SIZES, ALLOWED_TERRAIN_FOR_BUILDING } from "@/
 import Building from "@/core/models/Building";
 import { faker } from "@faker-js/faker";
 
+const MAX_BUILDING_COUNT = 5;
+
 class BuildingManager {
   constructor() {
     console.log("BuildingManager initialized");
@@ -14,9 +16,10 @@ class BuildingManager {
     this.context = context;
     // Logic to update building states (e.g., construction, upgrades)
     // create random buildings if possible.
-    if (this.buildings.value.length < 3) {
+    if (this.buildings.value.length < MAX_BUILDING_COUNT) {
       this.generateRandomBuilding();
     }
+    this.buildings.value.forEach((building) => building.update(context));
   }
 
   getAvailableBuildingForCompany() {
@@ -61,6 +64,7 @@ class BuildingManager {
       buildingWidth,
       buildingHeight
     );
+    newBuilding.setTile(randomTile);
     console.log("Created building:", newBuilding.getDetails());
     return newBuilding;
   }

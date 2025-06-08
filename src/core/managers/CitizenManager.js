@@ -1,8 +1,7 @@
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import Citizen from "@/core/models/Citizen";
-import { BUILDING_TYPES } from "@/constants/buildingTypes";
 
-const MAX_CITIZENS_PER_RESIDENCE = 1; // Example capacity
+const MAX_CITIZENS = 10; // Example capacity
 const SPAWN_INTERVAL_TICKS = 5; // Attempt to spawn a citizen every 100 ticks
 
 class CitizenManager {
@@ -33,7 +32,7 @@ class CitizenManager {
   }
 
   trySpawnCitizen(context) {
-    if (this.citizens.value.length >= 3) {
+    if (this.citizens.value.length >= MAX_CITIZENS) {
       // console.log('Maximum citizens reached. Not spawning new citizen.');
       return;
     }
@@ -44,7 +43,7 @@ class CitizenManager {
     }
     const newCitizen = new Citizen();
     this.addCitizen(newCitizen);
-    console.log(`Spawned new citizen ${newCitizen.name} at (${randomTile.x}, ${randomTile.y})`);
+    // console.log(`Spawned new citizen ${newCitizen.name} at (${randomTile.x}, ${randomTile.y})`);
   }
 
   // Add other methods for citizen behavior management, etc.

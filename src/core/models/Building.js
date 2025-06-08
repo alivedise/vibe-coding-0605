@@ -6,10 +6,18 @@ class Building {
     this.type = type; // From BUILDING_TYPES
     this.x = x; // Top-left x-coordinate on the map grid
     this.y = y; // Top-left y-coordinate on the map grid
+    this.tile = null;
+    this.tileId = null;
+    this.tiles = []; // prepare for multiple tiles
     this.width = width; // Width in grid cells
     this.height = height; // Height in grid cells
     this.companyId = null;
+    this.stockings = [];
     // Add other properties like residents, jobs, companyId later
+  }
+
+  update(context) {
+    
   }
 
   getDetails() {
@@ -21,6 +29,13 @@ class Building {
     };
   }
 
+  setTile(tile) {
+    this.tile = tile;
+    this.tile.setBuilding(this);
+    this.tileId = tile.id;
+    this.tiles.push(tile);
+  }
+
   // Method to check if a point (px, py) is within this building's footprint
   contains(px, py) {
     return (
@@ -29,6 +44,22 @@ class Building {
       py >= this.y &&
       py < this.y + this.height
     );
+  }
+
+  fetchStocking() {
+    return this.stockings.shift();
+  }
+
+  storeStocking(stocking) {
+    if (!stocking) {
+      return;
+    }
+    this.stockings.push(stocking);
+  }
+
+  setCompany(company) {
+    this.companyId = company.id;
+    this.company = company;
   }
 }
 

@@ -18,6 +18,7 @@ class MapManager {
   update(context) {
     // console.log('MapManager update', context);
     // Logic to update map state (e.g., terrain changes, building placements)
+    this.tiles.value.forEach(tile => tile.update(context));
   }
 
   getTileSize() {

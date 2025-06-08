@@ -13,7 +13,21 @@
           {{ slotProps.data.ownerId ? slotProps.data.ownerId.substring(0, 8) + '...' : 'N/A' }}
         </template>
       </Column>
-      <Column field="status" header="Status" :sortable="true"></Column>
+      <Column field="status" header="Stockings" :sortable="true">
+        <template #body="slotProps">
+          {{ slotProps.data.hasStockings() ? 'Yes' : 'No' }}
+        </template>
+      </Column>
+      <Column field="currentTile" header="Current Tile" :sortable="true">
+        <template #body="slotProps">
+          {{ slotProps.data.currentTile ? slotProps.data.currentTile.id.substring(0, 8) + '...' : 'N/A' }}
+        </template>
+      </Column>
+      <Column field="targetTile" header="Target Tile" :sortable="true">
+        <template #body="slotProps">
+          {{ slotProps.data.targetTile ? slotProps.data.targetTile.id.substring(0, 8) + '...' : 'N/A' }}
+        </template>
+      </Column>
       <!-- Add more columns as Vehicle model develops -->
     </DataTable>
   </div>

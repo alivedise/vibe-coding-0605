@@ -14,7 +14,7 @@ class CompanyManager {
     if (this.companies.value.length < 5 && context.buildingManager.buildings.value.length > 0) {
       const building = context.buildingManager.getAvailableBuildingForCompany();
       if (building) {
-        this.createCompany(building.id);
+        this.createCompany(building);
       }
     }
   }
@@ -23,9 +23,14 @@ class CompanyManager {
     this.companies.value.push(company);
   }
 
-  createCompany(buildingId) {
-    const company = new Company();
-    company.buildingId = buildingId;
+  getCompanyById(id) {
+    return this.companies.value.find((company) => company.id === id);
+  }
+
+  createCompany(building) {
+    const company = new Company(this);
+    company.setBuilding(building);
+    building.setCompany(company);
     this.addCompany(company);
     return company;
   }
