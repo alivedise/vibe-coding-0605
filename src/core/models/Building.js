@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { BUILDING_COLORS } from "@/constants/buildingTypes";
 
 class Building {
   constructor(id, type, x, y, width, height) {
@@ -18,6 +19,10 @@ class Building {
 
   update(context) {
     
+  }
+
+  getColor() {
+    return BUILDING_COLORS[this.type];
   }
 
   getDetails() {

@@ -33,7 +33,7 @@ class CitizenManager {
 
   triggerRef(citizen) { // The 'citizen' argument is no longer strictly needed here but kept for signature consistency if called from Citizen.js
     // Create a new Map instance to trigger reactivity
-    this.citizens.value.set(citizen.id, citizen);
+    this.citizens.value = new Map(this.citizens.value);
     // console.log('CitizenManager triggerRef called, new citizens map instance created.');
   }
 

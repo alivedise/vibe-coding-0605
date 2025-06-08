@@ -21,8 +21,8 @@ export default defineConfig({
         theme_color: '#4DBA87',
         background_color: '#ffffff',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: '/vibe-coding-0605/',
+        start_url: '/vibe-coding-0605/',
         icons: [
           {
             src: 'img/icons/pwa-192x192.png', // You'll need to create this icon

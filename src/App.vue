@@ -65,14 +65,11 @@ import TabPanel from 'primevue/tabpanel';
 import Button from 'primevue/button';
 import FpsCounter from "@/components/FpsCounter.vue";
 import Dialog from 'primevue/dialog'; // Import Dialog
-import GameStateManager from "@/core/managers/GameStateManager";
-import { provide, onMounted, onUnmounted, computed, ref } from "vue";
+import { onMounted, onUnmounted, computed, ref, inject } from "vue";
 
 const showStatistics = ref(false);
 const showFpsChartDialog = ref(false);
-
-const gameStateManager = new GameStateManager();
-provide("gameStateManager", gameStateManager);
+const gameStateManager = inject("gameStateManager");
 
 let rafId;
 

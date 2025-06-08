@@ -34,6 +34,16 @@ class Citizen {
     this.path = [];
     this.currentPathIndex = 0;
     this.manager = manager;
+    this.color = faker.color.rgb();
+    this.belongings = [];
+  }
+
+  own(product) {
+    this.belongings.push(product);
+  }
+
+  getColor() {
+    return this.color;
   }
 
   getInfo() {

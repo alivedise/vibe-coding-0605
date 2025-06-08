@@ -16,8 +16,12 @@ class Product {
     this.creationDate = new Date();
     // Example: Value could be related to job salary or a random commerce item price
     this.value = faker.commerce.price({ min: 10, max: 200, dec: 2 }); 
-
+    this.color = faker.color.rgb();
     // console.log(`New product created: ${this.name} (ID: ${this.id}) by company ${this.producedByCompanyId}`);
+  }
+
+  getColor() {
+    return this.color;
   }
 
   getDetails() {
