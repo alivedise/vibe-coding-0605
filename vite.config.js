@@ -12,7 +12,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'] // Ensure all assets are cached
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'], // Ensure all assets are cached
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024 // 5 MB
       },
       manifest: {
         name: 'Vibe City Simulator',

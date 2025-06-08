@@ -1,36 +1,58 @@
-# This is a basic workflow to help you get started with Actions
+name: Create Release
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build-and-release:
+    name: Build and Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create a release
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10 # Corresponds to pnpm version in package.json
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build project
+        run: pnpm run build
+        env:
+          # VITE_BASE_URL is set in vite.config.js, no need to override here unless dynamic
+          CI: true
+
+      - name: Create a ZIP archive of the dist folder
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          zip -r dist.zip ./dist
+
+      - name: Create Release Tag
+        id: tag
+        run: echo "TAG_NAME=release-$(date +'%Y-%m-%d-%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          name: "Release ${{ env.TAG_NAME }}"
+          body: "Automated release of build artifacts from the main branch."
+          draft: false
+          prerelease: false
+          files: |
+            dist.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
