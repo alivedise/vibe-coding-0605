@@ -1,16 +1,22 @@
 <template>
-  <div class="fps-counter">
+  <div class="fps-counter" @click="handleClick" style="cursor: pointer;">
     FPS: {{ fps }}
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, inject } from 'vue';
 
 const fps = ref(0);
 let frameCount = 0;
 let lastTime = performance.now();
 let animationFrameId = null;
+const gameStateManager = inject('gameStateManager');
+const emit = defineEmits(['request-show-chart']);
+
+const handleClick = () => {
+  emit('request-show-chart');
+};
 
 const calculateFps = () => {
   frameCount++;
@@ -19,6 +25,9 @@ const calculateFps = () => {
 
   if (deltaTime >= 1000) { // Update FPS every second
     fps.value = Math.round((frameCount * 1000) / deltaTime);
+    if (gameStateManager) {
+      gameStateManager.addFpsData(fps.value);
+    }
     frameCount = 0;
     lastTime = currentTime;
   }

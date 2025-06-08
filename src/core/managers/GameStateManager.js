@@ -17,6 +17,8 @@ class GameStateManager {
     this.currentTimestamp = this.lastTimestamp;
     this.isPaused = ref(false);
     this.tickCounter = ref(0);
+    this.fpsHistory = ref([]); // For storing FPS data points { tick: number, fps: number }
+    this.maxFpsHistoryLength = 200; // Store last 200 FPS readings
     this.resourceManager = new ResourceManager();
     this.mapManager = new MapManager();
     // BuildingManager needs map dimensions and mapData (terrain) for placement logic
@@ -57,6 +59,13 @@ class GameStateManager {
     this.jobManager?.update(context);
 
     this.tickCounter.value++;
+  }
+
+  addFpsData(fpsValue) {
+    this.fpsHistory.value.push({ tick: this.tickCounter.value, fps: fpsValue });
+    if (this.fpsHistory.value.length > this.maxFpsHistoryLength) {
+      this.fpsHistory.value.shift(); // Remove the oldest entry
+    }
   }
 
   // Method to gather context from all managers

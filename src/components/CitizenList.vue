@@ -57,9 +57,9 @@ const displayedCitizens = computed(() => {
     // eslint-disable-next-line no-unused-vars
     const _tick = gameStateManager.tickCounter.value;
   }
-  if (gameStateManager && gameStateManager.citizenManager) {
-    // Return a shallow copy to potentially help Vue's reactivity with v-for
-    return gameStateManager.citizenManager.citizens.value.slice();
+  if (gameStateManager && gameStateManager.citizenManager && gameStateManager.citizenManager.citizens.value instanceof Map) {
+    // Convert Map values to an array
+    return Array.from(gameStateManager.citizenManager.citizens.value.values());
   }
   return [];
 });

@@ -27,7 +27,7 @@
       />
       <!-- Render citizens -->
       <MapCitizen
-        v-for="citizen in (gameStateManager && gameStateManager.citizenManager && gameStateManager.citizenManager.citizens.value) || []"
+        v-for="citizen in Array.from((gameStateManager?.citizenManager?.citizens?.value instanceof Map ? gameStateManager.citizenManager.citizens.value.values() : []) || [])"
         :key="citizen.id"
         :citizen="citizen"
         :update-signal="gameStateManager.tickCounter.value"

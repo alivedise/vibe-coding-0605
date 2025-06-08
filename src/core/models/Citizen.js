@@ -128,7 +128,7 @@ class Citizen {
       } else {
           this.action = new ActionClass(this);
       }
-      this.manager.triggerRef();
+      this.manager.triggerRef(this);
 
       if (!this.action) return; // If action couldn't be created
     }

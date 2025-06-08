@@ -8,7 +8,7 @@
       <div class="game-container">
         <WorldMap />
       </div>
-      <div class="sidebar-container">
+      <div class="sidebar-container" v-if="showStatistics">
         <TabView>
           <TabPanel header="Citizen Overview">
             <CitizenList />
@@ -39,9 +39,14 @@
     </div>
     <div class="controls-container">
       <Button :label="pauseButtonLabel" @click="togglePause" />
-      <FpsCounter />
+      <Button :label="showStatistics ? 'Hide Statistics' : 'Show Statistics'" @click="toggleStatistics" />
+      <FpsCounter @request-show-chart="openFpsChartDialog" />
     </div>
   </main>
+
+  <Dialog header="FPS Trend Analysis" v-model:visible="showFpsChartDialog" modal :style="{width: '75vw', height: '70vh'}" :breakpoints="{'960px': '75vw', '640px': '90vw'}">
+    <FpsTrendChart />
+  </Dialog>
 </template>
 
 <script setup>
@@ -54,29 +59,38 @@ import ProductTable from "@/components/tables/ProductTable.vue";
 import VehicleTable from "@/components/tables/VehicleTable.vue";
 import BuildingTable from "@/components/tables/BuildingTable.vue";
 import TileTable from "@/components/tables/TileTable.vue";
+import FpsTrendChart from "@/components/charts/FpsTrendChart.vue"; // Import the new chart
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Button from 'primevue/button';
 import FpsCounter from "@/components/FpsCounter.vue";
+import Dialog from 'primevue/dialog'; // Import Dialog
 import GameStateManager from "@/core/managers/GameStateManager";
-import { provide, onMounted, onUnmounted, computed } from "vue";
+import { provide, onMounted, onUnmounted, computed, ref } from "vue";
+
+const showStatistics = ref(false);
+const showFpsChartDialog = ref(false);
 
 const gameStateManager = new GameStateManager();
 provide("gameStateManager", gameStateManager);
 
-let gameLoopIntervalId;
-const GAME_TICK_INTERVAL_MS = 1000/60; // e.g., tick every second
+let rafId;
+
+const gameLoop = () => {
+  gameStateManager.tick(); // GameStateManager.tick() already handles the isPaused state
+  rafId = requestAnimationFrame(gameLoop);
+};
 
 onMounted(() => {
-  console.log("App.vue mounted, starting game loop.");
-  gameLoopIntervalId = setInterval(() => {
-    gameStateManager.tick();
-  }, GAME_TICK_INTERVAL_MS);
+  console.log("App.vue mounted, starting game loop with requestAnimationFrame.");
+  gameLoop(); // Start the loop
 });
 
 onUnmounted(() => {
-  console.log("App.vue unmounted, clearing game loop.");
-  clearInterval(gameLoopIntervalId);
+  console.log("App.vue unmounted, cancelling animation frame.");
+  if (rafId) {
+    cancelAnimationFrame(rafId);
+  }
 });
 
 const pauseButtonLabel = computed(() => {
@@ -89,6 +103,14 @@ const togglePause = () => {
   } else {
     gameStateManager.pauseGame();
   }
+};
+
+const toggleStatistics = () => {
+  showStatistics.value = !showStatistics.value;
+};
+
+const openFpsChartDialog = () => {
+  showFpsChartDialog.value = true;
 };
 </script>
 

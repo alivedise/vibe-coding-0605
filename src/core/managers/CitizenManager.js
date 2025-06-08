@@ -7,7 +7,7 @@ const SPAWN_INTERVAL_TICKS = 5; // Attempt to spawn a citizen every 100 ticks
 class CitizenManager {
   constructor() {
     console.log("CitizenManager initialized");
-    this.citizens = ref([]);
+    this.citizens = ref(new Map());
     this.ticksSinceLastSpawnAttempt = 0;
   }
 
@@ -21,22 +21,24 @@ class CitizenManager {
     }
 
     // Logic to update citizen states (e.g., movement, actions, needs)
-    this.citizens.value.forEach((citizen) => citizen.update(context));
+    this.citizens.value.forEach((citizen) => citizen.update(context)); // Iterating map values is fine
   }
 
   addCitizen(citizen) {
-    this.citizens.value.push(citizen);
+    this.citizens.value.set(citizen.id, citizen);
     console.log(
-      `Citizen ${citizen.name} added. Total citizens: ${this.citizens.value.length}`,
+      `Citizen ${citizen.name} added. Total citizens: ${this.citizens.value.size}`,
     );
   }
 
-  triggerRef() {
-    // this.citizens.value = [...this.citizens.value];
+  triggerRef(citizen) { // The 'citizen' argument is no longer strictly needed here but kept for signature consistency if called from Citizen.js
+    // Create a new Map instance to trigger reactivity
+    this.citizens.value.set(citizen.id, citizen);
+    // console.log('CitizenManager triggerRef called, new citizens map instance created.');
   }
 
   trySpawnCitizen(context) {
-    if (this.citizens.value.length >= MAX_CITIZENS) {
+    if (this.citizens.value.size >= MAX_CITIZENS) {
       // console.log('Maximum citizens reached. Not spawning new citizen.');
       return;
     }

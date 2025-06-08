@@ -45,8 +45,9 @@ import Column from 'primevue/column';
 const gameStateManager = inject('gameStateManager');
 
 const citizens = computed(() => {
-  if (gameStateManager && gameStateManager.citizenManager) {
-    return gameStateManager.citizenManager.citizens.value;
+  if (gameStateManager && gameStateManager.citizenManager && gameStateManager.citizenManager.citizens.value instanceof Map) {
+    // Convert Map values to an array
+    return Array.from(gameStateManager.citizenManager.citizens.value.values());
   }
   return [];
 });
