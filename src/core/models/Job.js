@@ -8,7 +8,7 @@ class Job {
     this.companyId = company.id;
     this.description = faker.lorem.sentence();
     this.salary = faker.finance.amount({ min: 30000, max: 150000, dec: 0, symbol: '$' });
-    this.requiredSkills = Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => faker.company.bsNoun());
+    this.requiredSkills = Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => faker.company.buzzNoun());
     this.occupied = false;
     this.employeeId = null;
     this.progress = 0;

@@ -3,7 +3,7 @@ import {
   DEFAULT_MAP_WIDTH,
   DEFAULT_MAP_HEIGHT,
 } from "@/constants/terrainTypes";
-import { ref } from "vue";
+import { ref, markRaw } from "vue";
 import { Tile } from '@/core/models/Tile.js';
 
 class MapManager {
@@ -45,7 +45,7 @@ class MapManager {
       for (let x = 0; x < this.width; x++) {
         const randomTerrain =
           terrainValues[Math.floor(Math.random() * terrainValues.length)];
-        flatTiles.push(new Tile(x, y, randomTerrain.name, randomTerrain.isWalkable, randomTerrain.terrainCost, this.tileSize));
+        flatTiles.push(markRaw(new Tile(x, y, randomTerrain.name, randomTerrain.isWalkable, randomTerrain.terrainCost, this.tileSize)));
       }
     }
     console.log("1D Tiles initialized, count:", flatTiles.length);

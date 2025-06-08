@@ -7,7 +7,7 @@ const MOODS = ['Happy', 'Neutral', 'Sad', 'Stressed', 'Content'];
 const EDUCATION_LEVELS = ['None', 'High School', 'College', 'Graduate'];
 
 class Citizen {
-  constructor() {
+  constructor(manager) {
     this.id = faker.string.uuid();
     this.name = faker.person.fullName();
     this.age = faker.number.int({ min: 18, max: 65 }); // Age range for working population
@@ -20,7 +20,7 @@ class Citizen {
     this.jobId = null;
     this.companyId = null;
     this.isLookingForJob = true;
-    this.skills = Array.from({ length: faker.number.int({ min: 1, max: 4 }) }, () => faker.company.bsNoun());
+    this.skills = Array.from({ length: faker.number.int({ min: 1, max: 4 }) }, () => faker.company.buzzNoun());
 
     // Reactive pixel coordinates for smooth animation - initialized in CitizenManager
     this.x = 0;
@@ -33,6 +33,7 @@ class Citizen {
     this.workBuildingId = null; // Will be set when a job at a company with a building is taken
     this.path = [];
     this.currentPathIndex = 0;
+    this.manager = manager;
   }
 
   getInfo() {
@@ -127,6 +128,7 @@ class Citizen {
       } else {
           this.action = new ActionClass(this);
       }
+      this.manager.triggerRef();
 
       if (!this.action) return; // If action couldn't be created
     }

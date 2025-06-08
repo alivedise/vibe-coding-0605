@@ -10,6 +10,7 @@
 import { computed } from "vue";
 
 const props = defineProps({
+  updateSignal: Number, // Add this prop
   citizen: {
     type: Object,
     required: true,
@@ -32,6 +33,8 @@ const generateColorFromId = (id) => {
 };
 
 const styleObject = computed(() => {
+  // Access props.updateSignal to make this computed property reactive to it
+  const _updateSignal = props.updateSignal;
   // Ensure props.citizen and its properties are accessed correctly
   // props.citizen.x and props.citizen.y are plain numbers now, no .value needed.
   const citizenSize = Math.max(4, props.tileSize / 5); // Citizen dot size, e.g., 4px or 1/5th of cell

@@ -16,6 +16,7 @@ class GameStateManager {
     this.lastTimestamp = new Date().getTime();
     this.currentTimestamp = this.lastTimestamp;
     this.isPaused = ref(false);
+    this.tickCounter = ref(0);
     this.resourceManager = new ResourceManager();
     this.mapManager = new MapManager();
     // BuildingManager needs map dimensions and mapData (terrain) for placement logic
@@ -53,8 +54,9 @@ class GameStateManager {
     this.recipeManager?.update(context);
     this.buildingManager?.update(context);
     this.pathManager?.update(context);
-    this.productManager?.update(context);
     this.jobManager?.update(context);
+
+    this.tickCounter.value++;
   }
 
   // Method to gather context from all managers

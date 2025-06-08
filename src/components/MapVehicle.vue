@@ -12,6 +12,7 @@
 import { computed } from "vue";
 
 const props = defineProps({
+  updateSignal: Number, // Add this prop
   vehicle: {
     type: Object,
     required: true,
@@ -46,6 +47,8 @@ const getVehicleColor = (vehicle) => {
 // console.log("MapVehicle props.vehicle:", props.vehicle);
 
 const styleObject = computed(() => {
+  // Access props.updateSignal to make this computed property reactive to it
+  const _updateSignal = props.updateSignal;
   // props.vehicle.x and props.vehicle.y are plain numbers now, no .value needed.
   const vehicleSize = Math.max(6, props.tileSize / 3); // Vehicle icon size
   return {

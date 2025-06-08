@@ -14,16 +14,9 @@
       <Column field="name" header="Name" :sortable="true"></Column>
       <Column field="age" header="Age" :sortable="true"></Column>
       <Column field="occupation" header="Occupation" :sortable="true"></Column>
-      <Column field="currentAction.type" header="Current Action" :sortable="true">
-        <template #body="slotProps">
-          {{ slotProps.data.currentAction ? slotProps.data.currentAction.type : 'Idle' }}
-        </template>
-      </Column>
-      <Column header="Location" :sortable="true">
-        <template #body="slotProps">
-          {{ slotProps.data.location ? `${slotProps.data.location.x.toFixed(0)}, ${slotProps.data.location.y.toFixed(0)}` : 'N/A' }}
-        </template>
-      </Column>
+      <Column field="action.name" header="Current Action" :sortable="true"></Column>
+      <Column field="currentTile.id" header="Current Tile ID" :sortable="true"></Column>
+      <Column field="targetTile.id" header="Target Tile ID" :sortable="true"></Column>
       <Column field="jobId" header="Job ID" :sortable="true">
         <template #body="slotProps">
           {{ slotProps.data.jobId ? slotProps.data.jobId.substring(0,8) + '...' : 'N/A' }}

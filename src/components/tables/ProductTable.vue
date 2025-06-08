@@ -14,6 +14,11 @@
         </template>
       </Column>
       <Column field="companyName" header="Produced by Company" :sortable="true"></Column>
+      <Column field="carrierId" header="Carrier ID" :sortable="true">
+        <template #body="slotProps">
+          {{ slotProps.data.carrierId?.substring(0,8) }}...
+        </template>
+      </Column>
       <Column field="producedByJobId" header="Job ID" :sortable="true">
         <template #body="slotProps">
           {{ slotProps.data.producedByJobId?.substring(0,8) }}...

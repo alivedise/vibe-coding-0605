@@ -1,5 +1,5 @@
 <template>
-  <div class="world-map-container" :style="containerStyle">
+  <div class="world-map-container">
     <div
       v-if="gameStateManager && gameStateManager.mapManager && gameStateManager.mapManager.tiles && gameStateManager.mapManager.tiles.value && gameStateManager.mapManager.tiles.value.length"
       class="world-map-grid"
@@ -30,12 +30,14 @@
         v-for="citizen in (gameStateManager && gameStateManager.citizenManager && gameStateManager.citizenManager.citizens.value) || []"
         :key="citizen.id"
         :citizen="citizen"
+        :update-signal="gameStateManager.tickCounter.value"
       />
       <!-- Render vehicles -->
       <MapVehicle
         v-for="vehicle in (gameStateManager && gameStateManager.vehicleManager && gameStateManager.vehicleManager.vehicles.value) || []"
         :key="vehicle.id"
         :vehicle="vehicle"
+        :update-signal="gameStateManager.tickCounter.value"
       />
     </div>
     <div v-else>

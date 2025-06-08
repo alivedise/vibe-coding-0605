@@ -1,5 +1,5 @@
 import Vehicle from "@/core/models/Vehicle";
-import { ref } from "vue";
+import { ref, markRaw } from "vue";
 
 class VehicleManager {
   constructor() {
@@ -23,7 +23,7 @@ class VehicleManager {
       // console.error('Failed to get random tile for citizen spawn.');
       return;
     }
-    const newVehicle = new Vehicle();
+    const newVehicle = markRaw(new Vehicle());
     this.vehicles.value.push(newVehicle);
     console.log(`Spawned new vehicle at (${randomTile.x}, ${randomTile.y})`);
   }

@@ -3,6 +3,7 @@ import { faker } from "@faker-js/faker";
 class Product {
   constructor(job) {
     this.id = faker.string.uuid();
+    this.carrierId = null;
     if (!job) {
       this.name = faker.commerce.productName();
       this.producedByJobId = null;
@@ -21,6 +22,11 @@ class Product {
 
   getDetails() {
     return `Product: ${this.name}, Value: $${this.value}, Produced by Job ID: ${this.producedByJobId}, Company ID: ${this.producedByCompanyId}, Created: ${this.creationDate.toLocaleTimeString()}`;
+  }
+
+  carryBy(carrier) {
+    this.carrierId = carrier.id;
+    this.carrier = carrier;
   }
 }
 

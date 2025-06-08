@@ -96,7 +96,7 @@ const togglePause = () => {
 #app {
   display: flex;
   flex-direction: column;
-  height: 10vh;
+  height: 100vh;
 }
 
 header {

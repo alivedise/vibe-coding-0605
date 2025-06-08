@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, markRaw } from "vue";
 import Citizen from "@/core/models/Citizen";
 
 const MAX_CITIZENS = 10; // Example capacity
@@ -31,6 +31,10 @@ class CitizenManager {
     );
   }
 
+  triggerRef() {
+    // this.citizens.value = [...this.citizens.value];
+  }
+
   trySpawnCitizen(context) {
     if (this.citizens.value.length >= MAX_CITIZENS) {
       // console.log('Maximum citizens reached. Not spawning new citizen.');
@@ -41,7 +45,7 @@ class CitizenManager {
       // console.error('Failed to get random tile for citizen spawn.');
       return;
     }
-    const newCitizen = new Citizen();
+    const newCitizen = markRaw(new Citizen(this));
     this.addCitizen(newCitizen);
     // console.log(`Spawned new citizen ${newCitizen.name} at (${randomTile.x}, ${randomTile.y})`);
   }

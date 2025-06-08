@@ -1,9 +1,9 @@
 <template>
   <div class="citizen-list-container">
-    <h3>Citizens ({{ gameStateManager.citizenManager.citizens.length }})</h3>
-    <div v-if="gameStateManager.citizenManager.citizens.value.length === 0" class="no-citizens">No citizens yet.</div>
+    <h3>Citizens ({{ displayedCitizens.length }}) <small>Tick: {{ gameStateManager && gameStateManager.tickCounter ? gameStateManager.tickCounter.value : 'N/A' }}</small></h3>
+    <div v-if="displayedCitizens.length === 0" class="no-citizens">No citizens yet.</div>
     <ul v-else class="citizen-list">
-      <li v-for="citizen in gameStateManager.citizenManager.citizens.value" :key="citizen.id" class="citizen-item">
+      <li v-for="citizen in displayedCitizens" :key="citizen.id" class="citizen-item">
         <strong>{{ citizen.name }}</strong> ({{
           citizen.gender?.charAt(0).toUpperCase()
         }}, {{ citizen.age }})
@@ -47,9 +47,22 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { inject, computed } from "vue";
 
 const gameStateManager = inject("gameStateManager");
+
+const displayedCitizens = computed(() => {
+  // Access tickCounter to make this computed property reactive to game ticks
+  if (gameStateManager && gameStateManager.tickCounter) {
+    // eslint-disable-next-line no-unused-vars
+    const _tick = gameStateManager.tickCounter.value;
+  }
+  if (gameStateManager && gameStateManager.citizenManager) {
+    // Return a shallow copy to potentially help Vue's reactivity with v-for
+    return gameStateManager.citizenManager.citizens.value.slice();
+  }
+  return [];
+});
 </script>
 
 <style scoped>

@@ -31,6 +31,7 @@ class Vehicle {
       return;
     }
     //console.log("Loading cargo:", stocking, "from tile:", this.currentTile);
+    stocking.carryBy(this);
     this.stockings.push(stocking);
   }
 
@@ -43,6 +44,7 @@ class Vehicle {
       return;
     }
     // console.log("Unloading cargo:", stocking, "to tile:", this.currentTile);
+    stocking.carryBy(this.currentTile);
     this.currentTile.storeStocking(stocking);
   }
 
