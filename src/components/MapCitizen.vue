@@ -31,8 +31,6 @@ const generateColorFromId = (id) => {
   return "#" + "00000".substring(0, 6 - color.length) + color;
 };
 
-console.log("MapCitizen props.citizen:", props.citizen);
-
 const styleObject = computed(() => {
   // Ensure props.citizen and its properties are accessed correctly
   // props.citizen.x and props.citizen.y are plain numbers now, no .value needed.
@@ -50,8 +48,6 @@ const styleObject = computed(() => {
     boxSizing: "border-box",
   };
 });
-
-console.log("MapCitizen styleObject.value:", styleObject.value);
 </script>
 
 <style scoped>

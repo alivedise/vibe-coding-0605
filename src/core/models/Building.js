@@ -8,6 +8,7 @@ class Building {
     this.y = y; // Top-left y-coordinate on the map grid
     this.width = width; // Width in grid cells
     this.height = height; // Height in grid cells
+    this.companyId = null;
     // Add other properties like residents, jobs, companyId later
   }
 

@@ -31,6 +31,12 @@
         :key="citizen.id"
         :citizen="citizen"
       />
+      <!-- Render vehicles -->
+      <MapVehicle
+        v-for="vehicle in (gameStateManager && gameStateManager.vehicleManager && gameStateManager.vehicleManager.vehicles.value) || []"
+        :key="vehicle.id"
+        :vehicle="vehicle"
+      />
     </div>
     <div v-else>
       <p>Loading map data...</p>
@@ -42,6 +48,7 @@
 import MapTile from "./MapTile.vue";
 import MapBuilding from "./MapBuilding.vue";
 import MapCitizen from "./MapCitizen.vue"; // Import MapCitizen
+import MapVehicle from "./MapVehicle.vue"; // Import MapVehicle
 import { inject, computed } from "vue";
 
 const gameStateManager = inject("gameStateManager");

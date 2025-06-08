@@ -12,6 +12,10 @@
         <br />
         Occupation: {{ citizen.occupation }}
         <br />
+        Company ID: {{ citizen.companyId?.substring(0, 8) }}
+        <br />
+        Job ID: {{ citizen.jobId?.substring(0, 8) }}
+        <br />
         Mood: {{ citizen.mood }}
         <br />
         Action: {{ citizen.action?.name }}

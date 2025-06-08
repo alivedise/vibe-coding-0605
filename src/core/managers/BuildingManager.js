@@ -19,6 +19,14 @@ class BuildingManager {
     }
   }
 
+  getAvailableBuildingForCompany() {
+    const availableBuildings = this.buildings.value.filter((building) => building.companyId === null && building.type !== BUILDING_TYPES.RESIDENTIAL);
+    if (availableBuildings.length === 0) {
+      return null;
+    }
+    return availableBuildings[Math.floor(Math.random() * availableBuildings.length)];
+  }
+
   getRandomBuilding() {
     return this.buildings.value[Math.floor(Math.random() * this.buildings.value.length)];
   }

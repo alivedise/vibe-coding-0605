@@ -1,16 +1,34 @@
+import Vehicle from "@/core/models/Vehicle";
+import { ref } from "vue";
+
 class VehicleManager {
   constructor() {
-    console.log("VehicleManager initialized");
-    this.vehicles = [];
+    this.vehicles = ref([]);
   }
 
   update(context) {
-    // console.log('VehicleManager update', context);
-    // Logic to update vehicle states (e.g., movement, cargo)
-    this.vehicles.forEach((vehicle) => vehicle.update(context));
+    this.vehicles.value.forEach((vehicle) => vehicle.update(context));
+    if (this.vehicles.value.length < 5) {
+      this.trySpawnVehicle(context);
+    }
   }
 
-  // Add methods for vehicle creation, pathfinding, etc.
+  requestAvailableVehicle() {
+    return this.vehicles.value.find((vehicle) => vehicle.capacity > 0);
+  }
+
+  trySpawnVehicle(context) {
+    const randomTile = context.mapManager.getRandomTile();
+    if (!randomTile) {
+      // console.error('Failed to get random tile for citizen spawn.');
+      return;
+    }
+    const newVehicle = new Vehicle();
+    this.vehicles.value.push(newVehicle);
+    console.log(`Spawned new vehicle at (${randomTile.x}, ${randomTile.y})`);
+  }
+
+  // Add other methods for citizen behavior management, etc.
 }
 
 export default VehicleManager;

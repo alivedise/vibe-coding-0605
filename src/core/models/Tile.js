@@ -11,6 +11,16 @@ export class Tile {
     this.buildingId = null; // ID of the building on this tile, if any
     this.isOccupied = false; // Generic flag if something (other than a building part of the tile type) is on it
     this.tileSize = tileSize;
+    this.stockings = [];
+  }
+
+  fetchCargo() {
+    // move stocking from source tile to target tile
+    return this.stockings.shift();
+  }
+
+  storeCargo(stocking) {
+    this.stockings.push(stocking);
   }
 
   setBuilding(buildingId) {

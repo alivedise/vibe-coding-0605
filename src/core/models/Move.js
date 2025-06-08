@@ -25,10 +25,10 @@ class Move {
     }
     if (!this.object.path.length) {
       this.object.path = context.pathManager.findPath(this.object.currentTile.id, this.object.targetTile.id);
+      this.speedIndicator = 0;
       //console.log(`Citizen ${this.id} found path:`, this.path);
       return;
     }
-    this.object.currentPathIndex++;
     if (this.object.currentPathIndex >= this.object.path.length) {
       this.object.currentPathIndex = 0;
       this.object.path = [];
@@ -40,6 +40,8 @@ class Move {
     const point = this.object.path[this.object.currentPathIndex];
     this.object.x = point.x;
     this.object.y = point.y;
+    // move reference this.object.speed
+    this.object.currentPathIndex ++;
   }
 
   decideWhereToGo(context) {
