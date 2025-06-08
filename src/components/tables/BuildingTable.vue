@@ -50,7 +50,7 @@ const gameStateManager = inject('gameStateManager');
 
 const buildings = computed(() => {
   if (gameStateManager && gameStateManager.buildingManager) {
-    return gameStateManager.buildingManager.buildings.value;
+    return gameStateManager.buildingManager.buildings;
   }
   return [];
 });

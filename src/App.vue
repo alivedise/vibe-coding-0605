@@ -8,7 +8,7 @@
       <div class="game-container">
         <WorldMap />
       </div>
-      <div class="sidebar-container" v-if="showStatistics">
+      <div class="sidebar-container" v-if="showStatistics" :key="refreshKey">
         <TabView>
           <TabPanel header="Citizen Overview" v-if="showCitizenOverview">
             <CitizenList />
@@ -40,6 +40,7 @@
     <div class="controls-container">
       <Button :label="pauseButtonLabel" @click="togglePause" />
       <Button :label="showStatistics ? 'Hide Statistics' : 'Show Statistics'" @click="toggleStatistics" />
+      <Button v-if="showStatistics" @click="updateTables">Update Tables</Button>
       <FpsCounter @request-show-chart="openFpsChartDialog" />
     </div>
   </main>
@@ -73,10 +74,15 @@ const gameStateManager = inject("gameStateManager");
 const showCitizenOverview = ref(false);
 
 let rafId;
+let refreshKey = ref(0);
 
 const gameLoop = () => {
   gameStateManager.tick(); // GameStateManager.tick() already handles the isPaused state
   rafId = requestAnimationFrame(gameLoop);
+};
+
+const updateTables = () => {
+  refreshKey.value++;
 };
 
 onMounted(() => {

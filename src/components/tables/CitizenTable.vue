@@ -8,11 +8,6 @@
       stripedRows
       dataKey="id"
     >
-      <template #header>
-        <div class="table-header">
-          <Button icon="pi pi-refresh" class="p-button-sm p-button-text" @click="updateCitizens" label="Refresh" />
-        </div>
-      </template>
       <Column field="id" header="ID" :sortable="true">
         <template #body="slotProps">
           {{ slotProps.data.id.substring(0, 8) }}...
@@ -44,8 +39,7 @@
 </template>
 
 <script setup>
-import { inject, ref, nextTick, reactive, computed } from 'vue';
-import Button from 'primevue/button';
+import { inject, ref } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -55,10 +49,7 @@ const gameStateManager = inject('gameStateManager');
 const citizens = ref([]);
 
 const updateCitizens = () => {
-  citizens.value = [];
-  nextTick(() => {
-    citizens.value = gameStateManager.citizenManager.citizens;
-  });
+  citizens.value = gameStateManager.citizenManager.citizens;
 };
 
 updateCitizens();
