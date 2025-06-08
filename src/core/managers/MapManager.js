@@ -1,28 +1,22 @@
 import {
   TERRAIN_TYPES,
-  DEFAULT_MAP_WIDTH,
-  DEFAULT_MAP_HEIGHT,
 } from "@/constants/terrainTypes";
-import { ref, markRaw } from "vue";
+import { markRaw } from "vue";
 import { Tile } from '@/core/models/Tile.js';
 
 class MapManager {
-  constructor(width = DEFAULT_MAP_WIDTH, height = DEFAULT_MAP_HEIGHT) {
+  constructor() {
     console.log("MapManager initialized");
-    this.width = width;
-    this.height = height;
-    this.tileSize = 100; // Default cell size in pixels, matches WorldMap.vue
-    this.tiles = this.initializeTiles();
+    this.tiles = [];
   }
 
   update(context) {
+    if (this.tiles.length === 0) {
+      this.tiles = this.initializeTiles(context);
+    }
     // console.log('MapManager update', context);
     // Logic to update map state (e.g., terrain changes, building placements)
     this.tiles.forEach(tile => tile.update(context));
-  }
-
-  getTileSize() {
-    return this.tileSize;
   }
 
   getRandomTile() {
@@ -38,14 +32,17 @@ class MapManager {
     return this.tiles.filter(tile => tile && tile.isWalkable === true && tile.buildingId === null && availableTileTypeList.includes(tile.type));
   }
 
-  initializeTiles() {
+  initializeTiles(context) {
+    this.width = context.configurationManager.MAP_WIDTH;
+    this.height = context.configurationManager.MAP_HEIGHT;
+    this.tileSize = context.configurationManager.TILE_SIZE;
     const flatTiles = [];
     const terrainValues = Object.values(TERRAIN_TYPES);
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         const randomTerrain =
           terrainValues[Math.floor(Math.random() * terrainValues.length)];
-        flatTiles.push(markRaw(new Tile(x, y, randomTerrain.name, randomTerrain.isWalkable, randomTerrain.terrainCost, this.tileSize)));
+        flatTiles.push(new Tile(x, y, randomTerrain.name, randomTerrain.isWalkable, randomTerrain.terrainCost, this.tileSize));
       }
     }
     console.log("1D Tiles initialized, count:", flatTiles.length);

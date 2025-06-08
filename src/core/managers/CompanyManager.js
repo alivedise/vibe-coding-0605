@@ -11,7 +11,7 @@ class CompanyManager {
     // console.log('CompanyManager update', context);
     // Logic to update company states (e.g., production, hiring)
     this.companies.forEach((company) => company.update(context));
-    if (this.companies.length < 5 && context.buildingManager.buildings.length > 0) {
+    if (this.companies.length < context.configurationManager.MAX_COMPANIES && context.buildingManager.buildings.length > 0) {
       const building = context.buildingManager.getAvailableBuildingForCompany();
       if (building) {
         this.createCompany(building);

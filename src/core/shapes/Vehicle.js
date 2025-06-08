@@ -1,4 +1,6 @@
 // src/core/shapes/Vehicle.js
+import { faker } from "@faker-js/faker";
+
 export function drawVehicles(ctx, vehicles, tileSize) {
   if (!ctx || !vehicles || !tileSize) return;
 
@@ -6,8 +8,7 @@ export function drawVehicles(ctx, vehicles, tileSize) {
     const pixelX = vehicle.x;
     const pixelY = vehicle.y;
 
-    let vehicleColor = '#c0392b'; // Default red
-    if (vehicle.type === 'truck') vehicleColor = '#7f8c8d';
+    let vehicleColor = vehicle.color;
     // TODO: Add more vehicle types and corresponding colors or sprites
 
     ctx.fillStyle = vehicleColor;

@@ -1,9 +1,6 @@
-import { ref, computed } from "vue";
 import { BUILDING_TYPES, BUILDING_SIZES, ALLOWED_TERRAIN_FOR_BUILDING } from "@/constants/buildingTypes";
 import Building from "@/core/models/Building";
 import { faker } from "@faker-js/faker";
-
-const MAX_BUILDING_COUNT = 5;
 
 class BuildingManager {
   constructor() {
@@ -16,7 +13,7 @@ class BuildingManager {
     this.context = context;
     // Logic to update building states (e.g., construction, upgrades)
     // create random buildings if possible.
-    if (this.buildings.length < MAX_BUILDING_COUNT) {
+    if (this.buildings.length < this.context.configurationManager.MAX_BUILDINGS) {
       this.generateRandomBuilding();
     }
     this.buildings.forEach((building) => building.update(context));

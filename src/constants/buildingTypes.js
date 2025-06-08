@@ -5,9 +5,9 @@ export const BUILDING_TYPES = {
 };
 
 export const BUILDING_COLORS = {
-  [BUILDING_TYPES.RESIDENTIAL]: "purple",
-  [BUILDING_TYPES.COMMERCIAL]: "orange",
-  [BUILDING_TYPES.INDUSTRIAL]: "brown",
+  [BUILDING_TYPES.RESIDENTIAL]: "lime",
+  [BUILDING_TYPES.COMMERCIAL]: "blue",
+  [BUILDING_TYPES.INDUSTRIAL]: "orange",
 };
 
 // Define default sizes or size ranges for buildings

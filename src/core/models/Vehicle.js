@@ -24,6 +24,7 @@ class Vehicle {
     this.capacity = faker.number.int({ min: 1, max: 5 }); // Capacity of the vehicle
     this.stockings = [];
     this.carryingId = null;
+    this.color = faker.color.rgb();
   }
 
   loadCargo() {

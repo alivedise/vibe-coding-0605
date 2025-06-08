@@ -1,5 +1,4 @@
 import Vehicle from "@/core/models/Vehicle";
-import { shallowReactive } from "vue";
 
 class VehicleManager {
   constructor() {

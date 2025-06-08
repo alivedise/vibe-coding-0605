@@ -15,13 +15,13 @@ const gameStateManager = inject("gameStateManager");
 const mapCanvasRef = ref(null);
 
 const isLoading = computed(() => {
-  return !(gameStateManager && gameStateManager.mapManager && gameStateManager.mapManager.tiles && gameStateManager.mapManager.tiles.length > 0);
+  return false;
 });
 
 onMounted(() => {
   gameStateManager.canvasManager.feedCanvas(mapCanvasRef.value);
-  mapCanvasRef.value.width = gameStateManager.mapManager.width * gameStateManager.mapManager.tileSize;
-  mapCanvasRef.value.height = gameStateManager.mapManager.height * gameStateManager.mapManager.tileSize;
+  mapCanvasRef.value.width = gameStateManager.configurationManager.MAP_WIDTH * gameStateManager.configurationManager.TILE_SIZE;
+  mapCanvasRef.value.height = gameStateManager.configurationManager.MAP_HEIGHT * gameStateManager.configurationManager.TILE_SIZE;
 });
 </script>
 
