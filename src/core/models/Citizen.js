@@ -8,7 +8,7 @@ const MOODS = ['Happy', 'Neutral', 'Sad', 'Stressed', 'Content'];
 const EDUCATION_LEVELS = ['None', 'High School', 'College', 'Graduate'];
 
 class Citizen {
-  constructor(manager) {
+  constructor() {
     this.id = faker.string.uuid();
     this.name = faker.person.fullName();
     this.age = faker.number.int({ min: 18, max: 65 }); // Age range for working population
@@ -34,13 +34,14 @@ class Citizen {
     this.workBuildingId = null; // Will be set when a job at a company with a building is taken
     this.path = [];
     this.currentPathIndex = 0;
-    this.manager = manager;
     this.color = faker.color.rgb();
     this.belongings = [];
+    this.money = 1000;
   }
 
   own(product) {
     this.belongings.push(product);
+    this.money -= product.getPrice();
   }
 
   getColor() {
@@ -60,7 +61,13 @@ class Citizen {
   resetAction(actionName) {
     this.action = null;
     if (actionName === "Work") {
-      this.context && this.context.jobManager?.findJobById(this.jobId)?.updateJobProgress();
+      const job = this.context.jobManager?.findJobById(this.jobId);
+      if (!job) {
+        console.error(`Citizen ${this.name} is working but cannot find job ${this.jobId}`);
+        return;
+      }
+      job.updateJobProgress();
+      this.money += job.getSalary();
     }
   }
 
@@ -96,7 +103,7 @@ class Citizen {
       return;
     }
 
-    const companies = context.companyManager.companies.value; // Assuming companies is a ref
+    const companies = context.companyManager.companies; // Assuming companies is a ref
     for (const company of companies) {
       const openJobs = company.getOpenJobs();
       // randomize the order of the jobs
@@ -141,7 +148,6 @@ class Citizen {
       } else {
           this.action = new ActionClass(this);
       }
-      this.manager.triggerRef(this);
 
       if (!this.action) return; // If action couldn't be created
     }

@@ -48,22 +48,22 @@ class CanvasManager {
     const buildingManager = context.buildingManager;
     const vehicleManager = context.vehicleManager;
 
-    if (mapManager && mapManager.tiles && mapManager.tiles.value) {
-      drawTiles(this.ctx, mapManager.tiles.value, tileSize);
-      drawStockings(this.ctx, mapManager.tiles.value, tileSize); // Draw stockings after tiles
+    if (mapManager && mapManager.tiles) {
+      drawTiles(this.ctx, mapManager.tiles, tileSize);
+      drawStockings(this.ctx, mapManager.tiles, tileSize); // Draw stockings after tiles
     }
 
-    if (buildingManager && buildingManager.buildings && buildingManager.buildings.value) {
-      drawBuildings(this.ctx, buildingManager.buildings.value, tileSize);
-      drawStockings(this.ctx, buildingManager.buildings.value, tileSize);
+    if (buildingManager && buildingManager.buildings) {
+      drawBuildings(this.ctx, buildingManager.buildings, tileSize);
+      drawStockings(this.ctx, buildingManager.buildings, tileSize);
     }
 
-    if (vehicleManager && vehicleManager.vehicles && vehicleManager.vehicles.value) {
-      drawVehicles(this.ctx, vehicleManager.vehicles.value, tileSize);
+    if (vehicleManager && vehicleManager.vehicles) {
+      drawVehicles(this.ctx, vehicleManager.vehicles, tileSize);
     }
 
-    if (citizenManager && citizenManager.citizens && citizenManager.citizens.value) {
-      drawCitizens(this.ctx, citizenManager.citizens.value, tileSize); // citizens is a Map
+    if (citizenManager && citizenManager.citizens && citizenManager.citizens) {
+      drawCitizens(this.ctx, citizenManager.citizens, tileSize); // citizens is a Map
     }
 
     // Add calls to other drawing methods (buildings, citizens, etc.) here

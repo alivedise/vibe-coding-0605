@@ -1,20 +1,20 @@
 import Vehicle from "@/core/models/Vehicle";
-import { ref, markRaw } from "vue";
+import { shallowReactive } from "vue";
 
 class VehicleManager {
   constructor() {
-    this.vehicles = ref([]);
+    this.vehicles = [];
   }
 
   update(context) {
-    this.vehicles.value.forEach((vehicle) => vehicle.update(context));
-    if (this.vehicles.value.length < 5) {
+    this.vehicles.forEach((vehicle) => vehicle.update(context));
+    if (this.vehicles.length < 5) {
       this.trySpawnVehicle(context);
     }
   }
 
   requestAvailableVehicle() {
-    return this.vehicles.value.find((vehicle) => vehicle.capacity > 0);
+    return this.vehicles.find((vehicle) => vehicle.capacity > 0);
   }
 
   trySpawnVehicle(context) {
@@ -23,8 +23,8 @@ class VehicleManager {
       // console.error('Failed to get random tile for citizen spawn.');
       return;
     }
-    const newVehicle = markRaw(new Vehicle());
-    this.vehicles.value.push(newVehicle);
+    const newVehicle = new Vehicle();
+    this.vehicles.push(newVehicle);
     console.log(`Spawned new vehicle at (${randomTile.x}, ${randomTile.y})`);
   }
 

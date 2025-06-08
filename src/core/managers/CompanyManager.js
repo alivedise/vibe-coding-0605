@@ -4,14 +4,14 @@ import Company from "@/core/models/Company";
 class CompanyManager {
   constructor() {
     console.log("CompanyManager initialized");
-    this.companies = ref([]);
+    this.companies = [];
   }
 
   update(context) {
     // console.log('CompanyManager update', context);
     // Logic to update company states (e.g., production, hiring)
-    this.companies.value.forEach((company) => company.update(context));
-    if (this.companies.value.length < 5 && context.buildingManager.buildings.value.length > 0) {
+    this.companies.forEach((company) => company.update(context));
+    if (this.companies.length < 5 && context.buildingManager.buildings.length > 0) {
       const building = context.buildingManager.getAvailableBuildingForCompany();
       if (building) {
         this.createCompany(building);
@@ -20,11 +20,11 @@ class CompanyManager {
   }
 
   addCompany(company) {
-    this.companies.value.push(company);
+    this.companies.push(company);
   }
 
   getCompanyById(id) {
-    return this.companies.value.find((company) => company.id === id);
+    return this.companies.find((company) => company.id === id);
   }
 
   createCompany(building) {

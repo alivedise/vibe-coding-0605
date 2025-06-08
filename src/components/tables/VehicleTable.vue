@@ -1,7 +1,14 @@
 <template>
   <div class="card">
     <h5>Vehicles</h5>
-    <DataTable :value="allVehicles" responsiveLayout="scroll" :paginator="true" :rows="5" emptyMessage="No vehicles found or VehicleManager not available.">
+    <DataTable
+      :value="reactiveVehicles"
+      responsiveLayout="scroll"
+      :paginator="true"
+      :rows="5"
+      emptyMessage="No vehicles found or VehicleManager not available."
+      dataKey="id"
+    >
       <Column field="id" header="ID" :sortable="true">
         <template #body="slotProps">
           {{ slotProps.data.id ? slotProps.data.id.substring(0, 8) + '...' : 'N/A' }}
@@ -34,16 +41,38 @@
 </template>
 
 <script setup>
-import { computed, inject } from 'vue';
+import { computed, inject, shallowReactive } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 const gameStateManager = inject('gameStateManager');
 
-const allVehicles = computed(() => {
+const vehicles = computed(() => {
+  if (gameStateManager && gameStateManager.vehicleManager) {
+    // Convert Map values to an array
+    if (gameStateManager.tickCounter.value > 0) {
+      return gameStateManager.vehicleManager.vehicles.map((vehicle) => {
+        vehicle.tickCounter = gameStateManager.tickCounter.value;
+        return vehicle;
+      });
+    }
+    return [];
+  }
+  return [];
+});
+
+// This computed property will now create reactive versions of vehicle data for the table
+const reactiveVehicles = computed(() => {
   if (gameStateManager && gameStateManager.vehicleManager && gameStateManager.vehicleManager.vehicles) {
-    // Assuming vehicles is a ref like other managers
-    return gameStateManager.vehicleManager.vehicles.value;
+    // The dependency on tickCounter.value ensures this computed property re-evaluates each tick
+    if (gameStateManager.tickCounter.value >= 0) { // Ensure tick has started
+      return gameStateManager.vehicleManager.vehicles.map(vehiclePJO => {
+        // Create a new reactive object for each PJO for this render cycle.
+        // This makes a shallow reactive copy.
+        return shallowReactive({ ...vehiclePJO }); 
+      });
+    }
+    return [];
   }
   return [];
 });

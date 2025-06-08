@@ -34,30 +34,13 @@
 </template>
 
 <script setup>
-import { computed, inject } from 'vue';
+import { inject } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 const gameStateManager = inject('gameStateManager');
 
-const allProducts = computed(() => {
-  if (gameStateManager && gameStateManager.productManager && gameStateManager.productManager.products.value && gameStateManager.companyManager) {
-    return gameStateManager.productManager.products.value.map(product => {
-      let companyName = 'N/A';
-      if (product.producedByCompanyId) {
-        const company = gameStateManager.companyManager.getCompanyById(product.producedByCompanyId);
-        if (company) {
-          companyName = company.name;
-        }
-      }
-      return {
-        ...product,
-        companyName: companyName,
-      };
-    });
-  }
-  return [];
-});
+const allProducts = gameStateManager.productManager.products;
 
 </script>
 

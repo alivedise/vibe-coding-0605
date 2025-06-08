@@ -42,7 +42,7 @@ const gameStateManager = inject('gameStateManager');
 
 const companies = computed(() => {
   if (gameStateManager && gameStateManager.companyManager) {
-    return gameStateManager.companyManager.companies.value;
+    return gameStateManager.companyManager.companies;
   }
   return [];
 });

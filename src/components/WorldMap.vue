@@ -15,7 +15,7 @@ const gameStateManager = inject("gameStateManager");
 const mapCanvasRef = ref(null);
 
 const isLoading = computed(() => {
-  return !(gameStateManager && gameStateManager.mapManager && gameStateManager.mapManager.tiles && gameStateManager.mapManager.tiles.value && gameStateManager.mapManager.tiles.value.length > 0);
+  return !(gameStateManager && gameStateManager.mapManager && gameStateManager.mapManager.tiles && gameStateManager.mapManager.tiles.length > 0);
 });
 
 onMounted(() => {

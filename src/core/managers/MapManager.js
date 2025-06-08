@@ -12,13 +12,13 @@ class MapManager {
     this.width = width;
     this.height = height;
     this.tileSize = 100; // Default cell size in pixels, matches WorldMap.vue
-    this.tiles = ref(this.initializeTiles());
+    this.tiles = this.initializeTiles();
   }
 
   update(context) {
     // console.log('MapManager update', context);
     // Logic to update map state (e.g., terrain changes, building placements)
-    this.tiles.value.forEach(tile => tile.update(context));
+    this.tiles.forEach(tile => tile.update(context));
   }
 
   getTileSize() {
@@ -26,16 +26,16 @@ class MapManager {
   }
 
   getRandomTile() {
-    const randomIndex = Math.floor(Math.random() * this.tiles.value.length);
-    return this.tiles.value[randomIndex];
+    const randomIndex = Math.floor(Math.random() * this.tiles.length);
+    return this.tiles[randomIndex];
   }
 
   requestAvailableTiles(availableTileTypeList) {
-    // Ensure tiles.value is an array and not empty before filtering
-    if (!Array.isArray(this.tiles.value) || this.tiles.value.length === 0) {
+    // Ensure tiles is an array and not empty before filtering
+    if (!Array.isArray(this.tiles) || this.tiles.length === 0) {
       return [];
     }
-    return this.tiles.value.filter(tile => tile && tile.isWalkable === true && tile.buildingId === null && availableTileTypeList.includes(tile.type));
+    return this.tiles.filter(tile => tile && tile.isWalkable === true && tile.buildingId === null && availableTileTypeList.includes(tile.type));
   }
 
   initializeTiles() {
@@ -55,7 +55,7 @@ class MapManager {
   getTileAt(x, y) {
     if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
       const index = y * this.width + x;
-      return this.tiles.value[index];
+      return this.tiles[index];
     }
     return null; // Out of bounds
   }
@@ -71,7 +71,7 @@ class MapManager {
 
   getTileById(tileId) {
     if (!tileId) return null;
-    return this.tiles.value.find(tile => tile.id === tileId);
+    return this.tiles.find(tile => tile.id === tileId);
   }
 }
 

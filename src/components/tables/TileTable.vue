@@ -40,7 +40,7 @@ const gameStateManager = inject('gameStateManager');
 
 const tiles = computed(() => {
   if (gameStateManager && gameStateManager.mapManager && gameStateManager.mapManager.tiles) {
-    return gameStateManager.mapManager.tiles.value;
+    return gameStateManager.mapManager.tiles;
   }
   return [];
 });

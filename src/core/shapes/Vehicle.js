@@ -3,16 +3,16 @@ export function drawVehicles(ctx, vehicles, tileSize) {
   if (!ctx || !vehicles || !tileSize) return;
 
   vehicles.forEach(vehicle => {
-    const pixelX = vehicle.x.value !== undefined ? vehicle.x.value : vehicle.x;
-    const pixelY = vehicle.y.value !== undefined ? vehicle.y.value : vehicle.y;
+    const pixelX = vehicle.x;
+    const pixelY = vehicle.y;
 
     let vehicleColor = '#c0392b'; // Default red
     if (vehicle.type === 'truck') vehicleColor = '#7f8c8d';
     // TODO: Add more vehicle types and corresponding colors or sprites
 
     ctx.fillStyle = vehicleColor;
-    const vehicleWidth = tileSize * 0.6;
-    const vehicleHeight = tileSize * 0.3;
+    const vehicleWidth = Math.min(tileSize * 0.6, 30);
+    const vehicleHeight = Math.min(tileSize * 0.3, 20);
     
     ctx.fillRect(
       pixelX - vehicleWidth / 2,

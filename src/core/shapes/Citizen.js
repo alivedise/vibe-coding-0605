@@ -8,8 +8,8 @@ export function drawCitizens(ctx, citizensMap, tileSize) {
     let citizenColor = typeof citizen.getColor === 'function' ? citizen.getColor() : '#3498db'; // Default blue
     const actionType = citizen.action?.name || 'Idle';
     
-    const pixelX = citizen.x.value !== undefined ? citizen.x.value : citizen.x;
-    const pixelY = citizen.y.value !== undefined ? citizen.y.value : citizen.y;
+    const pixelX = citizen.x;
+    const pixelY = citizen.y;
 
     const citizenRadius = Math.max(3, tileSize / 15);
 
@@ -53,6 +53,14 @@ export function drawCitizens(ctx, citizensMap, tileSize) {
       }
       ctx.lineWidth = 1; // Reset line width
     }
+
+    // Draw money
+    ctx.fillStyle = 'gold';
+    const fontSizeMoney = Math.max(10, tileSize / 8);
+    ctx.font = `${fontSizeMoney}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(citizen.money, pixelX, pixelY + citizenRadius + 15); // Position text below the citizen circle
 
     // Draw belongings
     drawBelongings(ctx, pixelX, pixelY, citizen.belongings, tileSize);

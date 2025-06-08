@@ -20,6 +20,10 @@ class Product {
     // console.log(`New product created: ${this.name} (ID: ${this.id}) by company ${this.producedByCompanyId}`);
   }
 
+  getPrice() {
+    return this.value;
+  }
+
   getColor() {
     return this.color;
   }

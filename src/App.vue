@@ -10,10 +10,10 @@
       </div>
       <div class="sidebar-container" v-if="showStatistics">
         <TabView>
-          <TabPanel header="Citizen Overview">
+          <TabPanel header="Citizen Overview" v-if="showCitizenOverview">
             <CitizenList />
           </TabPanel>
-          <TabPanel header="Citizen Details">
+          <TabPanel header="Citizens">
             <CitizenTable />
           </TabPanel>
           <TabPanel header="Companies">
@@ -70,6 +70,7 @@ import { onMounted, onUnmounted, computed, ref, inject } from "vue";
 const showStatistics = ref(false);
 const showFpsChartDialog = ref(false);
 const gameStateManager = inject("gameStateManager");
+const showCitizenOverview = ref(false);
 
 let rafId;
 

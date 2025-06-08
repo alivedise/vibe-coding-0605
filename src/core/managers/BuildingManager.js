@@ -8,7 +8,7 @@ const MAX_BUILDING_COUNT = 5;
 class BuildingManager {
   constructor() {
     console.log("BuildingManager initialized");
-    this.buildings = ref([]);
+    this.buildings = [];
     // Pass the mapManager (as part of a minimal context) to placeInitialBuildings
   }
 
@@ -16,14 +16,14 @@ class BuildingManager {
     this.context = context;
     // Logic to update building states (e.g., construction, upgrades)
     // create random buildings if possible.
-    if (this.buildings.value.length < MAX_BUILDING_COUNT) {
+    if (this.buildings.length < MAX_BUILDING_COUNT) {
       this.generateRandomBuilding();
     }
-    this.buildings.value.forEach((building) => building.update(context));
+    this.buildings.forEach((building) => building.update(context));
   }
 
   getAvailableBuildingForCompany() {
-    const availableBuildings = this.buildings.value.filter((building) => building.companyId === null && building.type !== BUILDING_TYPES.RESIDENTIAL);
+    const availableBuildings = this.buildings.filter((building) => building.companyId === null && building.type !== BUILDING_TYPES.RESIDENTIAL);
     if (availableBuildings.length === 0) {
       return null;
     }
@@ -31,7 +31,7 @@ class BuildingManager {
   }
 
   getRandomBuilding() {
-    return this.buildings.value[Math.floor(Math.random() * this.buildings.value.length)];
+    return this.buildings[Math.floor(Math.random() * this.buildings.length)];
   }
 
   createBuilding(context, type) {
@@ -82,7 +82,7 @@ class BuildingManager {
     }
 
     // 2. Check for collision with existing buildings
-    for (const existingBuilding of this.buildings.value) {
+    for (const existingBuilding of this.buildings) {
       if (
         building.x < existingBuilding.x + existingBuilding.width &&
         building.x + building.width > existingBuilding.x &&
@@ -136,7 +136,7 @@ class BuildingManager {
       // Decide if this should prevent placement or not; for now, let's allow if no rules.
     }
 
-    this.buildings.value.push(building);
+    this.buildings.push(building);
     console.log("Building added:", building.getDetails());
     return true;
   }
@@ -151,7 +151,7 @@ class BuildingManager {
   }
   
   getBuildingsByType(type) {
-    return this.buildings.value.filter(building => building.type === type);
+    return this.buildings.filter(building => building.type === type);
   }
 }
 

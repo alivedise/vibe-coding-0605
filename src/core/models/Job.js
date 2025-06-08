@@ -7,7 +7,7 @@ class Job {
     this.company = company; // Link to the company offering the job
     this.companyId = company.id;
     this.description = faker.lorem.sentence();
-    this.salary = faker.finance.amount({ min: 30000, max: 150000, dec: 0, symbol: '$' });
+    this.salary = faker.finance.amount({ min: 3000, max: 15000, dec: 0, symbol: '$' });
     this.requiredSkills = Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => faker.company.buzzNoun());
     this.occupied = false;
     this.employeeId = null;
@@ -15,6 +15,11 @@ class Job {
     // this.maxProgress = Math.floor(Math.random() * 100) + 1;
     this.maxProgress = 3; // debugging purpose
     // Later, we can add things like experienceLevel, employmentType (full-time, part-time), etc.
+  }
+
+  getSalary() {
+    // turn salary into int
+    return parseInt(this.salary.replace('$', ''), 10);
   }
 
   isDone() {

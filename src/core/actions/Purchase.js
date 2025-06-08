@@ -12,6 +12,9 @@ class Purchase {
     if (!product) {
       return;
     }
+    if (owner.money < product.getPrice()) {
+      return;
+    }
     owner.own(product);
     product.carryBy(owner);
   }

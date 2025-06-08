@@ -50,21 +50,7 @@ import Column from 'primevue/column';
 
 const gameStateManager = inject('gameStateManager');
 
-const allJobs = computed(() => {
-  if (gameStateManager && gameStateManager.companyManager && gameStateManager.companyManager.companies.value) {
-    return gameStateManager.companyManager.companies.value.reduce((acc, company) => {
-      // Each job in company.jobs already has a 'company' property which is the company instance
-      // and a 'companyId' property.
-      // We also need to ensure the job object is flat or DataTable can access nested props like company.name
-      const jobsWithCompanyInfo = company.jobs.map(job => ({ 
-        ...job, 
-        // companyName: company.name, // Already available via job.company.name
-      }));
-      return acc.concat(jobsWithCompanyInfo);
-    }, []);
-  }
-  return [];
-});
+const allJobs = gameStateManager.jobManager.jobs;
 
 </script>
 

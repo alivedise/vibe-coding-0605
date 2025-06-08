@@ -1,9 +1,16 @@
 <template>
   <div class="citizen-table-container">
-    <DataTable :value="citizens" :paginator="true" :rows="10" responsiveLayout="scroll" stripedRows>
+    <DataTable
+      :value="citizens"
+      :paginator="true"
+      :rows="10"
+      responsiveLayout="scroll"
+      stripedRows
+      dataKey="id"
+    >
       <template #header>
         <div class="table-header">
-          Citizen Details
+          <Button icon="pi pi-refresh" class="p-button-sm p-button-text" @click="updateCitizens" label="Refresh" />
         </div>
       </template>
       <Column field="id" header="ID" :sortable="true">
@@ -37,20 +44,24 @@
 </template>
 
 <script setup>
-import { ref, computed, inject } from 'vue';
+import { inject, ref, nextTick, reactive, computed } from 'vue';
+import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 
 const gameStateManager = inject('gameStateManager');
 
-const citizens = computed(() => {
-  if (gameStateManager && gameStateManager.citizenManager && gameStateManager.citizenManager.citizens.value instanceof Map) {
-    // Convert Map values to an array
-    return Array.from(gameStateManager.citizenManager.citizens.value.values());
-  }
-  return [];
-});
+const citizens = ref([]);
+
+const updateCitizens = () => {
+  citizens.value = [];
+  nextTick(() => {
+    citizens.value = gameStateManager.citizenManager.citizens;
+  });
+};
+
+updateCitizens();
 
 </script>
 

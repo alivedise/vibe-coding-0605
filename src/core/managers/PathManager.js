@@ -18,7 +18,7 @@ class PathManager {
 
   constructPaths(context) {
     const graph = new WeightedGraph();
-    const tiles = context.mapManager.tiles.value;
+    const tiles = context.mapManager.tiles;
     if (!tiles || tiles.length === 0) {
       console.error('No tiles found in mapManager');
       return;
@@ -38,7 +38,7 @@ class PathManager {
           graph.addEdge(tile.id, neighborTile.id, 1);
           const start = tile.getCenterPoint();
           const end = neighborTile.getCenterPoint();
-          const path = new Path(start.x, start.y, end.x, end.y);
+          const path  = new Path(start.x, start.y, end.x, end.y);
           this.paths.push(path);
           this.pathMap.set(`${tile.id}/${neighborTile.id}`, path);
         }

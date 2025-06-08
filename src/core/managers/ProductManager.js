@@ -1,9 +1,8 @@
-import { ref } from "vue";
 
 class ProductManager {
   constructor() {
     console.log("ProductManager initialized");
-    this.products = ref([]); // Could be an object mapping product types to lists or quantities
+    this.products = []; // Could be an object mapping product types to lists or quantities
     this.productMap = new Map();
   }
 
@@ -13,7 +12,7 @@ class ProductManager {
   }
 
   registerProduct(product) {
-    this.products.value.push(product);
+    this.products.push(product);
     this.productMap.set(product.id, product);
   }
 

@@ -1,5 +1,6 @@
 class JobManager {
   constructor() {
+    this.jobs = [];
     this.jobMap = new Map();
   }
 
@@ -9,6 +10,7 @@ class JobManager {
 
   registerJob(job) {
     this.jobMap.set(job.id, job);
+    this.jobs.push(job);
   }
 
   update(context) {
