@@ -45,15 +45,15 @@ export class Tile {
 
   storeStocking(stocking) {
     if (!stocking) {
-      console.error('No stocking provided to storeStocking method.');
+      // console.error('No stocking provided to storeStocking method.');
       return;
     }
     if (!this.building) {
-      console.log(`Storing stocking ${stocking.name} at tile (${this.x}, ${this.y})`);
+      // console.log(`Storing stocking ${stocking.name} at tile (${this.x}, ${this.y})`);
       this.stockings.push(stocking);
       return;
     }
-    console.log(`Storing stocking ${stocking.name} at tile (${this.x}, ${this.y}) to building ${this.building.id}`);
+    //console.log(`Storing stocking ${stocking.name} at tile (${this.x}, ${this.y}) to building ${this.building.id}`);
     this.building.storeStocking(stocking);
   }
 

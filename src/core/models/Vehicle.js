@@ -30,7 +30,7 @@ class Vehicle {
     if (!stocking) {
       return;
     }
-    console.log("Loading cargo:", stocking, "from tile:", this.currentTile);
+    //console.log("Loading cargo:", stocking, "from tile:", this.currentTile);
     this.stockings.push(stocking);
   }
 
@@ -42,7 +42,7 @@ class Vehicle {
     if (!stocking) {
       return;
     }
-    console.log("Unloading cargo:", stocking, "to tile:", this.currentTile);
+    // console.log("Unloading cargo:", stocking, "to tile:", this.currentTile);
     this.currentTile.storeStocking(stocking);
   }
 
