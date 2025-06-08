@@ -7,6 +7,7 @@ import VehicleManager from "./VehicleManager";
 import ProductManager from "./ProductManager";
 import RecipeManager from "./RecipeManager";
 import PathManager from "./PathManager";
+import JobManager from "./JobManager";
 
 class GameStateManager {
   constructor() {
@@ -16,6 +17,7 @@ class GameStateManager {
     // BuildingManager needs map dimensions and mapData (terrain) for placement logic
     this.buildingManager = new BuildingManager();
     this.pathManager = new PathManager();
+    this.jobManager = new JobManager();
     this.citizenManager = new CitizenManager();
     this.companyManager = new CompanyManager();
     this.vehicleManager = new VehicleManager();
@@ -42,6 +44,7 @@ class GameStateManager {
     this.recipeManager?.update(context);
     this.buildingManager?.update(context);
     this.pathManager?.update(context);
+    this.jobManager?.update(context);
   }
 
   // Method to gather context from all managers
@@ -56,6 +59,7 @@ class GameStateManager {
       productManager: this.productManager,
       recipeManager: this.recipeManager,
       pathManager: this.pathManager,
+      jobManager: this.jobManager,
       // Add other relevant game state data here
     };
   }

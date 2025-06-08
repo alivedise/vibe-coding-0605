@@ -2,9 +2,16 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import GameStateManager from "@/core/managers/GameStateManager";
 
-import "./assets/main.css"; // We'll create this later for global styles
+import PrimeVue from 'primevue/config';
+import Material from '@primevue/themes/material';
 
 const app = createApp(App);
+
+app.use(PrimeVue, {
+    theme: {
+        preset: Material,
+    }
+});
 
 // Initialize Game State Manager
 const gameStateManager = new GameStateManager();

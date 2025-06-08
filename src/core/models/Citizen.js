@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import Rest from "@/core/actions/rest";
 import Move from "@/core/models/Move"; // Note: Move model might be an action, or require different instantiation
+import Work from "@/core/actions/work";
 
 const MOODS = ['Happy', 'Neutral', 'Sad', 'Stressed', 'Content'];
 const EDUCATION_LEVELS = ['None', 'High School', 'College', 'Graduate'];
@@ -44,8 +45,11 @@ class Citizen {
     );
   }
 
-  resetAction() {
+  resetAction(actionName) {
     this.action = null;
+    if (actionName === "Work") {
+      this.context && this.context.jobManager?.findJobById(this.jobId)?.updateJobProgress();
+    }
   }
 
   setJob(job, company) {
@@ -95,6 +99,10 @@ class Citizen {
   }
 
   update(context) {
+    if (!this.context) {
+      this.context = context;
+      // XXX: storing context might be a bad idea. Refine this later.
+    }
     if (this.isLookingForJob && !this.action) {
       this.lookForWork(context);
       // If a job was found, isLookingForJob is now false.
@@ -105,7 +113,7 @@ class Citizen {
       // TODO: Action selection needs refinement.
       // The current Move action instantiation might be incorrect based on Move model/action definition.
       // For now, keeping existing logic.
-      const actions = [Move, Rest];
+      const actions = [Move, Rest, Work];
       const ActionClass = actions[Math.floor(Math.random() * actions.length)];
       
       // Placeholder for more complex action instantiation if needed

@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@primevue/themes": "^4.3.5",
     "pinia": "^3.0.3",
+    "primeflex": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.3.5",
     "vue": "^3.4.27"
   },
   "devDependencies": {
