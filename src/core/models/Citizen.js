@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import Rest from "@/core/actions/rest";
 import Move from "@/core/models/Move"; // Note: Move model might be an action, or require different instantiation
-import Work from "@/core/actions/work";
-import Purchase from "@/core/actions/purchase";
+import Work from "@/core/actions/Work";
+import Purchase from "@/core/actions/Purchase";
 
 const MOODS = ['Happy', 'Neutral', 'Sad', 'Stressed', 'Content'];
 const EDUCATION_LEVELS = ['None', 'High School', 'College', 'Graduate'];
