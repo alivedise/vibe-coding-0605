@@ -1,0 +1,41 @@
+// src/core/shapes/Vehicle.js
+export function drawVehicles(ctx, vehicles, tileSize) {
+  if (!ctx || !vehicles || !tileSize) return;
+
+  vehicles.forEach(vehicle => {
+    const pixelX = vehicle.x.value !== undefined ? vehicle.x.value : vehicle.x;
+    const pixelY = vehicle.y.value !== undefined ? vehicle.y.value : vehicle.y;
+
+    let vehicleColor = '#c0392b'; // Default red
+    if (vehicle.type === 'truck') vehicleColor = '#7f8c8d';
+    // TODO: Add more vehicle types and corresponding colors or sprites
+
+    ctx.fillStyle = vehicleColor;
+    const vehicleWidth = tileSize * 0.6;
+    const vehicleHeight = tileSize * 0.3;
+    
+    ctx.fillRect(
+      pixelX - vehicleWidth / 2,
+      pixelY - vehicleHeight / 2,
+      vehicleWidth,
+      vehicleHeight
+    );
+
+    // Draw cargo if present
+    if (vehicle.stockings && vehicle.stockings.length > 0) {
+      const cargo = vehicle.stockings[0];
+      const cargoColor = (typeof cargo.getColor === 'function' ? cargo.getColor() : (cargo.color || '#f1c40f')); // Default yellow for cargo
+      ctx.fillStyle = cargoColor;
+      
+      const cargoDisplayWidth = vehicleWidth * 0.5;
+      const cargoDisplayHeight = vehicleHeight * 0.4;
+      
+      ctx.fillRect(
+        pixelX - cargoDisplayWidth / 2, // Center cargo on vehicle's x
+        pixelY - vehicleHeight / 2 - cargoDisplayHeight * 0.75, // Position on top of the vehicle body
+        cargoDisplayWidth,
+        cargoDisplayHeight
+      );
+    }
+  });
+}
