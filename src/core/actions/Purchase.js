@@ -1,19 +1,27 @@
 class Purchase {
-  constructor(building) {
-    this.id = faker.string.uuid();
-    this.name = faker.commerce.productName();
-    this.price = faker.commerce.price({ min: 10, max: 200, dec: 2 });
-    this.color = faker.color.rgb();
-    this.building = building;
+  constructor(object) {
+    this.progress = 0;
+    this.max = Math.floor(Math.random() * 100) + 1;
+    this.object = object;
   }
 
+  name = "Purchase";
+
   execute(owner) {
-    const product = this.building.stockings.shift();
+    const product = this.object.currentTile?.fetchStocking();
     if (!product) {
       return;
     }
     owner.own(product);
     product.carryBy(owner);
+  }
+
+  update() {
+    this.progress += 1;
+    if (this.progress >= this.max) {
+      this.execute(this.object);
+      this.object.resetAction();
+    } 
   }
 }
 

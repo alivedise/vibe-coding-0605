@@ -1,7 +1,7 @@
 import { ref, markRaw } from "vue";
 import Citizen from "@/core/models/Citizen";
 
-const MAX_CITIZENS = 10; // Example capacity
+const MAX_CITIZENS = 30; // Example capacity
 const SPAWN_INTERVAL_TICKS = 5; // Attempt to spawn a citizen every 100 ticks
 
 class CitizenManager {

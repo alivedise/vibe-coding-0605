@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import Rest from "@/core/actions/rest";
 import Move from "@/core/models/Move"; // Note: Move model might be an action, or require different instantiation
 import Work from "@/core/actions/work";
+import Purchase from "@/core/actions/purchase";
 
 const MOODS = ['Happy', 'Neutral', 'Sad', 'Stressed', 'Content'];
 const EDUCATION_LEVELS = ['None', 'High School', 'College', 'Graduate'];
@@ -98,6 +99,8 @@ class Citizen {
     const companies = context.companyManager.companies.value; // Assuming companies is a ref
     for (const company of companies) {
       const openJobs = company.getOpenJobs();
+      // randomize the order of the jobs
+      openJobs.sort(() => Math.random() - 0.5);
       for (const job of openJobs) {
         // Attempt to apply for the job
         if (company.applyJob(this)) { // applyJob in Company.js removes the job and returns true
@@ -124,7 +127,7 @@ class Citizen {
       // TODO: Action selection needs refinement.
       // The current Move action instantiation might be incorrect based on Move model/action definition.
       // For now, keeping existing logic.
-      const actions = [Move, Rest, Work];
+      const actions = [Move, Rest, Work, Purchase];
       const ActionClass = actions[Math.floor(Math.random() * actions.length)];
       
       // Placeholder for more complex action instantiation if needed

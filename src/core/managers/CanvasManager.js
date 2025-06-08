@@ -69,6 +69,9 @@ class CanvasManager {
         tileSize * 0.2,
         (building.height || 1) * tileSize * 0.3
       );
+
+  
+      // draw stocking of the building
     });
   }
 
@@ -116,6 +119,9 @@ class CanvasManager {
         }
         this.ctx.lineWidth = 1; // Reset line width
       }
+
+      // Draw belongings
+      this.drawBelongings(centerX, centerY, citizen.belongings, tileSize);
     });
   }
 
@@ -148,6 +154,20 @@ class CanvasManager {
     });
   }
 
+  drawBelongings(centerX, centerY, belongings, tileSize) {
+    if (!this.ctx || !belongings || !tileSize) return;
+    // draw belongings count on top of citizen
+    this.ctx.fillStyle = 'black';
+    this.ctx.font = `${tileSize / 7}px Arial`;
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'bottom';
+    this.ctx.fillText(
+      belongings.length.toString(),
+      centerX + 5,
+      centerY - 5
+    );
+  }
+
   // Placeholder for drawing stockings/products on tiles
   drawStockings(tiles, tileSize) {
     if (!this.ctx || !tiles || !tileSize) return;
@@ -156,6 +176,10 @@ class CanvasManager {
         const stockingSize = tileSize / 8;
         const padding = tileSize / 10;
         tile.stockings.forEach((stocking, index) => {
+          if (index > 10) {
+            // Too much, ignore
+            return;
+          }
           // Simple stacking effect if multiple items
           const offsetX = (index % 3) * (stockingSize + padding);
           const offsetY = Math.floor(index / 3) * (stockingSize + padding);
@@ -221,6 +245,7 @@ class CanvasManager {
 
     if (buildingManager && buildingManager.buildings && buildingManager.buildings.value) {
       this.drawBuildings(buildingManager.buildings.value, tileSize);
+      this.drawStockings(buildingManager.buildings.value, tileSize);
     }
 
     if (vehicleManager && vehicleManager.vehicles && vehicleManager.vehicles.value) {
