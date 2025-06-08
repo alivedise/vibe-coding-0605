@@ -16,6 +16,8 @@ class Product {
     // Example: Value could be related to job salary or a random commerce item price
     this.value = faker.commerce.price({ min: 10, max: 200, dec: 2 }); 
     this.color = faker.color.rgb();
+    const icons = ['pi pi-box', 'pi pi-gift', 'pi pi-inbox', 'pi pi-database', 'pi pi-briefcase'];
+    this.icon = icons[Math.floor(Math.random() * icons.length)];
     // console.log(`New product created: ${this.name} (ID: ${this.id}) by company ${this.producedByCompanyId}`);
   }
 

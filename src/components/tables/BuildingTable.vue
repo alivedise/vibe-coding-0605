@@ -15,7 +15,7 @@
         <h5>Stockings:</h5>
         <ul v-if="selectedBuilding.stockings && selectedBuilding.stockings.length > 0">
           <li v-for="(stocking, index) in selectedBuilding.stockings" :key="stocking.id || index">
-            {{ stocking?.name || 'Unknown Product' }}
+            <ProductDisplay :item="stocking" />
           </li>
         </ul>
         <p v-else>No stockings.</p>
@@ -68,6 +68,7 @@
 <script setup>
 import { ref, inject } from 'vue';
 import Sidebar from 'primevue/sidebar';
+import ProductDisplay from '@/components/ProductDisplay.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -95,6 +96,7 @@ const closeSidebar = () => { // Though not explicitly called by a button, good t
 .building-table-container {
   margin-top: 1rem;
 }
+
 .table-header {
   display: flex;
   justify-content: space-between;

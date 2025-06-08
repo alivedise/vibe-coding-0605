@@ -18,7 +18,7 @@
                 <h5>Belongings:</h5>
         <ul v-if="selectedCitizen.belongings && selectedCitizen.belongings.length > 0">
           <li v-for="item in selectedCitizen.belongings" :key="item.id">
-            {{ item.name }} (Value: ${{ item.value }})
+            <ProductDisplay :item="item" />
           </li>
         </ul>
         <p v-else>No belongings.</p>
@@ -70,6 +70,7 @@ import { inject, ref } from 'vue';
 import Sidebar from 'primevue/sidebar';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import ProductDisplay from '@/components/ProductDisplay.vue';
 
 
 const gameStateManager = inject('gameStateManager');
