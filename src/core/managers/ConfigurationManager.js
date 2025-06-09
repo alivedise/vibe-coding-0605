@@ -7,11 +7,12 @@ class ConfigurationManager {
     this.MAX_VEHICLES = 150;
     this.MAX_BUILDINGS = 200;
     this.MAP_WIDTH = 85;
-    this.MAP_HEIGHT = 24;
+    this.MAP_HEIGHT = 45;
     this.TILE_SIZE = 20;
     this.DISPLAY_MONEY = false;
     this.DISPLAY_STOCKINGS = false;
     this.DISPLAY_ACTION = false;
+    this.DISPLA_BELONGING_COUNT = false;
   }
 
   update() {

@@ -4,6 +4,7 @@ import { drawBelongings } from './Belonging.js';
 export function drawCitizens(ctx, citizensMap, tileSize, {
   drawMoney = false,
   drawAction = false,
+  drawBelongingCount = false,
 }) {
   if (!ctx || !citizensMap || !tileSize) return;
 
@@ -68,7 +69,8 @@ export function drawCitizens(ctx, citizensMap, tileSize, {
       ctx.textBaseline = 'bottom';
       ctx.fillText(citizen.money, pixelX, pixelY + citizenRadius + 15); // Position text below the citizen circle
     }
-    // Draw belongings
-    drawBelongings(ctx, pixelX, pixelY, citizen.belongings, tileSize);
+    if (drawBelongingCount) {
+      drawBelongings(ctx, pixelX, pixelY, citizen.belongings, tileSize);
+    }
   });
 }

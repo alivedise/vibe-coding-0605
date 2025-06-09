@@ -5,7 +5,7 @@
 
   <main>
     <div class="layout-container">
-      <div class="game-container">
+      <div class="game-container" :style="gameContainerStyle">
         <WorldMap />
       </div>
       <div class="sidebar-container" v-if="showStatistics" :key="refreshKey">
@@ -41,6 +41,7 @@
       <Button :label="pauseButtonLabel" @click="togglePause" />
       <Button :label="showStatistics ? 'Hide Statistics' : 'Show Statistics'" @click="toggleStatistics" />
       <Button v-if="showStatistics" @click="updateTables">Update Tables</Button>
+      <Button :label="renderButtonLabel" @click="toggleCanvasRender" />
       <FpsCounter @request-show-chart="openFpsChartDialog" />
     </div>
   </main>
@@ -72,6 +73,7 @@ const showStatistics = ref(false);
 const showFpsChartDialog = ref(false);
 const gameStateManager = inject("gameStateManager");
 const showCitizenOverview = ref(false);
+const isCanvasRenderingEnabled = ref(true);
 
 let rafId;
 let refreshKey = ref(0);
@@ -116,6 +118,31 @@ const toggleStatistics = () => {
 const openFpsChartDialog = () => {
   showFpsChartDialog.value = true;
 };
+
+const renderButtonLabel = computed(() => {
+  return isCanvasRenderingEnabled.value ? 'Disable Rendering' : 'Enable Rendering';
+});
+
+const toggleCanvasRender = () => {
+  isCanvasRenderingEnabled.value = !isCanvasRenderingEnabled.value;
+  if (gameStateManager && gameStateManager.canvasManager) {
+    gameStateManager.canvasManager.isRenderingGloballyEnabled = isCanvasRenderingEnabled.value;
+  }
+};
+
+const gameContainerStyle = computed(() => {
+  if (gameStateManager && gameStateManager.configurationManager) {
+    const height = gameStateManager.configurationManager.MAP_HEIGHT * gameStateManager.configurationManager.TILE_SIZE + 50;
+    return {
+      height: `${height}px`,
+      // Optionally set width here too if it's also dynamic
+      // width: `${gameStateManager.configurationManager.MAP_WIDTH * gameStateManager.configurationManager.TILE_SIZE}px`
+    };
+  }
+  return {
+    height: '500px' // Default height if config not available yet
+  };
+});
 </script>
 
 <style scoped>
@@ -162,7 +189,7 @@ main {
 .game-container {
   border: 1px solid #ccc;
   /* flex-grow: 1; */ /* Replaced with specific height/flex basis */
-  height: 500px; /* Example: Map takes 60% of the layout-container height */
+  /* height: 500px; */ /* Example: Map takes 60% of the layout-container height - Now controlled by gameContainerStyle */
   width: 100%; /* Map takes full width */
 }
 

@@ -10,6 +10,7 @@ class CanvasManager {
     this.tileSize = 100; // Default tile size
     this.canvasElement = null;
     this.canvas = null;
+    this.isRenderingGloballyEnabled = true; // Added flag
     console.log('CanvasManager initialized');
   }
 
@@ -33,6 +34,7 @@ class CanvasManager {
    * @param {Object} gameState - The current game state, containing all managers.
    */
   draw(context) {
+    if (!this.isRenderingGloballyEnabled) return; // Check the flag
     if (!this.ctx || !context) {
       // console.warn('CanvasManager: Context or gameState not available for drawing.');
       return;
@@ -69,6 +71,7 @@ class CanvasManager {
       drawCitizens(this.ctx, citizenManager.citizens, tileSize, {
         drawMoney: context.configurationManager.DISPLAY_MONEY,
         drawAction: context.configurationManager.DISPLAY_ACTION,
+        drawBelongingCount: context.configurationManager.DISPLA_BELONGING_COUNT,
       }); // citizens is a Map
     }
 
