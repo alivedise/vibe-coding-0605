@@ -20,7 +20,7 @@ class Vehicle {
     this.path = [];
     this.currentPathIndex = 0;
     this.targetTile = null; // Stores the target Tile object
-    this.speed = 1; //faker.number.int({ min: 2, max: 5 }); // Speed in pixels per update tick. Adjust as needed.
+    this.speed = 2; //faker.number.int({ min: 2, max: 5 }); // Speed in pixels per update tick. Adjust as needed.
     this.capacity = faker.number.int({ min: 1, max: 5 }); // Capacity of the vehicle
     this.stockings = [];
     this.carryingId = null;

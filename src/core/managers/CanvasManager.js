@@ -3,7 +3,6 @@ import { drawBuildings } from "@/core/shapes/Building";
 import { drawCitizens } from "@/core/shapes/Citizen";
 import { drawVehicles } from "@/core/shapes/Vehicle";
 import { drawStockings } from "@/core/shapes/Stocking";
-import { drawBelongings } from "@/core/shapes/Belonging";
 
 class CanvasManager {
   constructor() {
@@ -50,12 +49,16 @@ class CanvasManager {
 
     if (mapManager && mapManager.tiles) {
       drawTiles(this.ctx, mapManager.tiles, tileSize);
-      drawStockings(this.ctx, mapManager.tiles, tileSize); // Draw stockings after tiles
+      if (context.configurationManager.DISPLAY_STOCKINGS) {
+        drawStockings(this.ctx, mapManager.tiles, tileSize); // Draw stockings after tiles
+      }
     }
 
     if (buildingManager && buildingManager.buildings) {
       drawBuildings(this.ctx, buildingManager.buildings, tileSize);
-      drawStockings(this.ctx, buildingManager.buildings, tileSize);
+      if (context.configurationManager.DISPLAY_STOCKINGS) {
+        drawStockings(this.ctx, buildingManager.buildings, tileSize);
+      }
     }
 
     if (vehicleManager && vehicleManager.vehicles) {
@@ -63,7 +66,10 @@ class CanvasManager {
     }
 
     if (citizenManager && citizenManager.citizens && citizenManager.citizens) {
-      drawCitizens(this.ctx, citizenManager.citizens, tileSize); // citizens is a Map
+      drawCitizens(this.ctx, citizenManager.citizens, tileSize, {
+        drawMoney: context.configurationManager.DISPLAY_MONEY,
+        drawAction: context.configurationManager.DISPLAY_ACTION,
+      }); // citizens is a Map
     }
 
     // Add calls to other drawing methods (buildings, citizens, etc.) here

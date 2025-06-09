@@ -1,7 +1,10 @@
 // src/core/shapes/Citizen.js
 import { drawBelongings } from './Belonging.js';
 
-export function drawCitizens(ctx, citizensMap, tileSize) {
+export function drawCitizens(ctx, citizensMap, tileSize, {
+  drawMoney = false,
+  drawAction = false,
+}) {
   if (!ctx || !citizensMap || !tileSize) return;
 
   citizensMap.forEach(citizen => {
@@ -13,13 +16,15 @@ export function drawCitizens(ctx, citizensMap, tileSize) {
 
     const citizenRadius = Math.max(3, tileSize / 15);
 
-    // Draw action type label
-    ctx.fillStyle = actionType === 'Move' ? '#e67e22' : (typeof citizen.getColor === 'function' ? citizen.getColor() : citizenColor);
-    const fontSize = Math.max(10, tileSize / 8);
-    ctx.font = `${fontSize}px Arial`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText(actionType, pixelX, pixelY - citizenRadius - 2); // Position text above the citizen circle
+    if (drawAction) {
+      // Draw action type label
+      ctx.fillStyle = actionType === 'Move' ? '#e67e22' : (typeof citizen.getColor === 'function' ? citizen.getColor() : citizenColor);
+      const fontSize = Math.max(10, tileSize / 8);
+      ctx.font = `${fontSize}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(actionType, pixelX, pixelY - citizenRadius - 2); // Position text above the citizen circle
+    }
 
     // Draw citizen body
     ctx.fillStyle = citizenColor;
@@ -54,14 +59,15 @@ export function drawCitizens(ctx, citizensMap, tileSize) {
       ctx.lineWidth = 1; // Reset line width
     }
 
-    // Draw money
-    ctx.fillStyle = 'gold';
-    const fontSizeMoney = Math.max(10, tileSize / 8);
-    ctx.font = `${fontSizeMoney}px Arial`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText(citizen.money, pixelX, pixelY + citizenRadius + 15); // Position text below the citizen circle
-
+    if (drawMoney) {
+      // Draw money
+      ctx.fillStyle = 'gold';
+      const fontSizeMoney = Math.max(10, tileSize / 8);
+      ctx.font = `${fontSizeMoney}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(citizen.money, pixelX, pixelY + citizenRadius + 15); // Position text below the citizen circle
+    }
     // Draw belongings
     drawBelongings(ctx, pixelX, pixelY, citizen.belongings, tileSize);
   });

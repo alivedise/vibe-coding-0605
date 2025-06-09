@@ -41,7 +41,7 @@ class Move {
     this.object.x = point.x;
     this.object.y = point.y;
     // move reference this.object.speed
-    this.object.currentPathIndex ++;
+    this.object.currentPathIndex += this.object.speed;
   }
 
   decideWhereToGo(context) {

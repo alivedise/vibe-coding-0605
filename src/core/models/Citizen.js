@@ -37,6 +37,7 @@ class Citizen {
     this.color = faker.color.rgb();
     this.belongings = [];
     this.money = 1000;
+    this.speed = 1; // Default speed
   }
 
   own(product) {

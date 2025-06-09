@@ -5,7 +5,7 @@ export const BUILDING_TYPES = {
 };
 
 export const BUILDING_COLORS = {
-  [BUILDING_TYPES.RESIDENTIAL]: "lime",
+  [BUILDING_TYPES.RESIDENTIAL]: "darkseagreen",
   [BUILDING_TYPES.COMMERCIAL]: "blue",
   [BUILDING_TYPES.INDUSTRIAL]: "orange",
 };
