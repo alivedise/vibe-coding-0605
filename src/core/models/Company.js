@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import Job from './Job.js';
 import Product from '@/core/models/Product.js';
-const MAX_JOB_COUNT = 10;
+import Vehicle from '@/core/models/Vehicle.js';
 
 class Company {
   constructor(manager) {
@@ -13,8 +13,21 @@ class Company {
     this.buildingId = null;
     this.buildings = []; // prepare for multiple buildings
     this.stockings = [];
-    this.restockings = []; 
+    this.restockings = [];
+    this.vehicles = [];
     this.manager = manager;
+    this.color = faker.color.rgb();
+  }
+
+  getTile() {
+    return this.building.tile;
+  }
+
+  getLocation() {
+    if (!this.building) {
+      return null;
+    }
+    return this.building.tile.getLocation();
   }
 
   setBuilding(building) {
@@ -27,7 +40,7 @@ class Company {
     if (!this.context) {
       this.context = context;
     }
-    if (this.jobs.length < MAX_JOB_COUNT) {
+    if (this.jobs.length < context.configurationManager.MAX_JOB_PER_COMPANY) {
       const job = new Job(this);
       context.jobManager.registerJob(job);
       this.jobs.push(job);
@@ -36,6 +49,23 @@ class Company {
       if (job.isDone()) {
         job.resetStatus();
         this.releaseProduct(context, job);
+      }
+    });
+    if (this.vehicles.length < context.configurationManager.MAX_VEHICLE_PER_COMPANY) {
+      const vehicle = new Vehicle(this);
+      vehicle.currentTile = this.building.tile;
+      context.vehicleManager.registerInstance(vehicle);
+      this.vehicles.push(vehicle);
+    }
+    this.vehicles.forEach(vehicle => {
+      if (!vehicle.action && this.building.stockings.length > 0) {
+        // console.log('Vehicle is delivering');
+        const seekingForDeliveryTarget = context.companyManager.getRandomCompany();
+        if (seekingForDeliveryTarget.id === this.id) {
+          // console.log('Vehicle is delivering to itself');
+          return;
+        }
+        vehicle.deliver(seekingForDeliveryTarget.building.tile, this.building.tile);
       }
     });
   }

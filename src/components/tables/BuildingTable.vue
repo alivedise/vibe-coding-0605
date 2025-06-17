@@ -11,7 +11,13 @@
         <p><strong>Size (W x H):</strong> {{ selectedBuilding.width }} x {{ selectedBuilding.height }}</p>
         <p><strong>Company ID:</strong> {{ selectedBuilding.companyId ? selectedBuilding.companyId : 'N/A' }}</p>
         <p><strong>Tile ID:</strong> {{ selectedBuilding.tileId ? selectedBuilding.tileId : 'N/A' }}</p>
-        
+        <h5>Residents:</h5>
+        <ul v-if="selectedBuilding.residents && selectedBuilding.residents.length > 0">
+          <li v-for="(resident, index) in selectedBuilding.residents" :key="resident.id || index">
+            <ProductDisplay :item="resident" />
+          </li>
+        </ul>
+        <p v-else>No residents.</p>
         <h5>Stockings:</h5>
         <ul v-if="selectedBuilding.stockings && selectedBuilding.stockings.length > 0">
           <li v-for="(stocking, index) in selectedBuilding.stockings" :key="stocking.id || index">

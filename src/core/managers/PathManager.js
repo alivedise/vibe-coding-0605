@@ -53,6 +53,7 @@ class PathManager {
       return null;
     }
     if (!startTileId || !endTileId) {
+      debugger;
       console.warn('[PathManager] Start or end tile ID is missing.');
       return null;
     }

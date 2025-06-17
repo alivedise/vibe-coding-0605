@@ -14,7 +14,18 @@ class Building {
     this.height = height; // Height in grid cells
     this.companyId = null;
     this.stockings = [];
+    this.residents = [];
     // Add other properties like residents, jobs, companyId later
+  }
+
+  // move in
+  moveIn(citizen) {
+    this.residents.push(citizen);
+  }
+
+  // move out
+  moveOut(citizen) {
+    this.residents = this.residents.filter((resident) => resident.id !== citizen.id);
   }
 
   update(context) {

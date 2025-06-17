@@ -10,6 +10,7 @@ import PathManager from "./PathManager";
 import JobManager from "./JobManager";
 import CanvasManager from "./CanvasManager";
 import ConfigurationManager from "./ConfigurationManager";
+import FocusManager from "./FocusManager";
 import { ref } from 'vue';
 
 class GameStateManager {
@@ -34,6 +35,7 @@ class GameStateManager {
     this.recipeManager = new RecipeManager();
     this.canvasManager = new CanvasManager();
     this.configurationManager = new ConfigurationManager();
+    this.focusManager = new FocusManager();
     window.gameStateManager = this;
 
     // this.initializeManagers(); // We can directly initialize in constructor for now
@@ -62,6 +64,7 @@ class GameStateManager {
     this.pathManager?.update(context);
     this.jobManager?.update(context);
     this.canvasManager?.update(context);
+    this.focusManager?.update(context);
 
     this.tickCounter.value++;
   }
@@ -91,6 +94,7 @@ class GameStateManager {
       lastTimestamp: this.lastTimestamp,
       canvasManager: this.canvasManager,
       configurationManager: this.configurationManager,
+      focusManager: this.focusManager,
       // Add other relevant game state data here
     };
   }

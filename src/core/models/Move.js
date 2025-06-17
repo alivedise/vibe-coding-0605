@@ -1,6 +1,11 @@
 class Move {
-  constructor(object) {
+  constructor(object, targetTile) {
     this.object = object;
+    if (targetTile) {
+      this.targetTile = targetTile;
+    } else {
+      console.warn(`Object ${this.object.id} has no target tile.`);
+    }
   }
 
   name = "Move";
@@ -12,18 +17,21 @@ class Move {
   move(context) {
     // Ensure citizen has a current tile. If not, try to place them or log error.
     if (!this.object.currentTile) {
+      console.warn(`Object ${this.object.id} has no current tile.`);
       this.object.currentTile = context.mapManager.getRandomTile();
       return;
     }
     if (!this.object.targetTile) {
-      this.object.targetTile = context.mapManager.getRandomTile();
-      if (this.object.targetTile.id === this.object.currentTile.id) {
+      if (this.targetTile) {
+        this.object.targetTile = this.targetTile;
+      }
+      if (this.object.targetTile?.id === this.object.currentTile.id) {
         this.object.targetTile = null;
         return;
       }
       return;
     }
-    if (!this.object.path.length) {
+    if (!this.object.path?.length) {
       this.object.path = context.pathManager.findPath(this.object.currentTile.id, this.object.targetTile.id);
       this.speedIndicator = 0;
       //console.log(`Citizen ${this.id} found path:`, this.path);

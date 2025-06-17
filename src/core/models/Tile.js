@@ -17,6 +17,13 @@ export class Tile {
     this.lastSpawn = null;
   }
 
+  getLocation() {
+    return {
+      x: this.x * this.tileSize + this.tileSize / 2,
+      y: this.y * this.tileSize + this.tileSize / 2,
+    };
+  }
+
   update(context) {
     // spawn product for testing purpose in a 1 second interval
     if (!this.lastSpawn) {

@@ -19,6 +19,14 @@ class BuildingManager {
     this.buildings.forEach((building) => building.update(context));
   }
 
+  getAvailableBuilding(type) {
+    const availableBuildings = this.buildings.filter((building) => building.companyId === null && building.type === type);
+    if (availableBuildings.length === 0) {
+      return null;
+    }
+    return availableBuildings[Math.floor(Math.random() * availableBuildings.length)];
+  }
+
   getAvailableBuildingForCompany() {
     const availableBuildings = this.buildings.filter((building) => building.companyId === null && building.type !== BUILDING_TYPES.RESIDENTIAL);
     if (availableBuildings.length === 0) {

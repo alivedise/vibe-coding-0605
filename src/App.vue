@@ -1,6 +1,9 @@
 <template>
   <header>
     <h1>City Simulator</h1>
+    <div class="building-tools">
+      
+    </div>
   </header>
 
   <main>
@@ -42,6 +45,7 @@
       <Button :label="showStatistics ? 'Hide Statistics' : 'Show Statistics'" @click="toggleStatistics" />
       <Button v-if="showStatistics" @click="updateTables">Update Tables</Button>
       <Button :label="renderButtonLabel" @click="toggleCanvasRender" />
+      <Button v-if="gameStateManager.focusManager.focusId" label="Unfocus" @click="unfocus" />
       <FpsCounter @request-show-chart="openFpsChartDialog" />
     </div>
   </main>
@@ -67,7 +71,7 @@ import TabPanel from 'primevue/tabpanel';
 import Button from 'primevue/button';
 import FpsCounter from "@/components/FpsCounter.vue";
 import Dialog from 'primevue/dialog'; // Import Dialog
-import { onMounted, onUnmounted, computed, ref, inject } from "vue";
+import { onMounted, onUnmounted, computed, ref, inject, watch } from "vue";
 
 const showStatistics = ref(false);
 const showFpsChartDialog = ref(false);
@@ -85,6 +89,10 @@ const gameLoop = () => {
 
 const updateTables = () => {
   refreshKey.value++;
+};
+
+const unfocus = () => {
+  gameStateManager.focusManager.blur();
 };
 
 onMounted(() => {

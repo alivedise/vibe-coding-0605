@@ -3,15 +3,21 @@ import App from "./App.vue";
 import GameStateManager from "@/core/managers/GameStateManager";
 
 import PrimeVue from 'primevue/config';
-import Material from '@primevue/themes/material';
+import Aura from '@primeuix/themes/aura';
 
 const app = createApp(App);
 
+
 app.use(PrimeVue, {
     theme: {
-        preset: Material,
+        preset: Aura,
+        options: {
+            prefix: 'p',
+            darkModeSelector: 'system',
+            cssLayer: false
+        }
     }
-});
+ });
 
 // Initialize Game State Manager
 const gameStateManager = new GameStateManager();
@@ -22,4 +28,3 @@ const gameStateManager = new GameStateManager();
 app.provide("gameStateManager", gameStateManager);
 
 app.mount("#app");
-

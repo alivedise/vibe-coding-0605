@@ -19,6 +19,10 @@ class CompanyManager {
     }
   }
 
+  getRandomCompany() {
+    return this.companies[Math.floor(Math.random() * this.companies.length)];
+  }
+
   addCompany(company) {
     this.companies.push(company);
   }

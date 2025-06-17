@@ -3,6 +3,8 @@ import { drawBuildings } from "@/core/shapes/Building";
 import { drawCitizens } from "@/core/shapes/Citizen";
 import { drawVehicles } from "@/core/shapes/Vehicle";
 import { drawStockings } from "@/core/shapes/Stocking";
+import { drawFocus } from "@/core/shapes/focus";
+import { drawCompanies } from "@/core/shapes/Company";
 
 class CanvasManager {
   constructor() {
@@ -39,43 +41,60 @@ class CanvasManager {
       // console.warn('CanvasManager: Context or gameState not available for drawing.');
       return;
     }
-  
-    const tileSize = context.mapManager.tileSize;
+
+    const {
+      focusManager,
+      mapManager,
+      citizenManager,
+      buildingManager,
+      vehicleManager,
+      configurationManager,
+      companyManager
+    } = context;
+    const focusObject = focusManager.focusedObject;
+    const tileSize = mapManager.tileSize;
 
     this.clearCanvas();
 
-    const mapManager = context.mapManager;
-    const citizenManager = context.citizenManager;
-    const buildingManager = context.buildingManager;
-    const vehicleManager = context.vehicleManager;
+
 
     if (mapManager && mapManager.tiles) {
+      // Tiles generally don't have individual focus IDs in the same way entities do, so not passing focus here.
       drawTiles(this.ctx, mapManager.tiles, tileSize);
-      if (context.configurationManager.DISPLAY_STOCKINGS) {
-        drawStockings(this.ctx, mapManager.tiles, tileSize); // Draw stockings after tiles
+      if (configurationManager.DISPLAY_STOCKINGS) {
+        // Assuming stockings on tiles are not individually focusable in this context.
+        drawStockings(this.ctx, mapManager.tiles, tileSize);
       }
     }
 
     if (buildingManager && buildingManager.buildings) {
       drawBuildings(this.ctx, buildingManager.buildings, tileSize);
-      if (context.configurationManager.DISPLAY_STOCKINGS) {
+      if (configurationManager.DISPLAY_STOCKINGS) {
+        // Assuming stockings on buildings are not individually focusable in this context.
         drawStockings(this.ctx, buildingManager.buildings, tileSize);
       }
+    }
+
+    if (companyManager && companyManager.companies) {
+      drawCompanies(this.ctx, companyManager.companies, tileSize);
     }
 
     if (vehicleManager && vehicleManager.vehicles) {
       drawVehicles(this.ctx, vehicleManager.vehicles, tileSize);
     }
 
-    if (citizenManager && citizenManager.citizens && citizenManager.citizens) {
+    if (citizenManager && citizenManager.citizens) {
       drawCitizens(this.ctx, citizenManager.citizens, tileSize, {
-        drawMoney: context.configurationManager.DISPLAY_MONEY,
-        drawAction: context.configurationManager.DISPLAY_ACTION,
-        drawBelongingCount: context.configurationManager.DISPLA_BELONGING_COUNT,
+        drawMoney: configurationManager.DISPLAY_MONEY,
+        drawAction: configurationManager.DISPLAY_ACTION,
+        drawBelongingCount: configurationManager.DISPLAY_BELONGING_COUNT, // Corrected typo from DISPLA_ to DISPLAY_
       }); // citizens is a Map
     }
 
     // Add calls to other drawing methods (buildings, citizens, etc.) here
+    if (focusObject) {
+      drawFocus(this.ctx, focusObject);
+    }
   }
 }
 

@@ -11,6 +11,9 @@ importers:
       '@faker-js/faker':
         specifier: ^8.4.1
         version: 8.4.1
+      '@primeuix/themes':
+        specifier: ^1.1.1
+        version: 1.1.1
       '@primevue/themes':
         specifier: ^4.3.5
         version: 4.3.5

@@ -4,7 +4,7 @@ import { drawBelongings } from './Belonging.js';
 export function drawCitizens(ctx, citizensMap, tileSize, {
   drawMoney = false,
   drawAction = false,
-  drawBelongingCount = false,
+  drawBelongingCount = false, 
 }) {
   if (!ctx || !citizensMap || !tileSize) return;
 

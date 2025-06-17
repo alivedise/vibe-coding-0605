@@ -3,6 +3,7 @@ import Rest from "@/core/actions/rest";
 import Move from "@/core/models/Move"; // Note: Move model might be an action, or require different instantiation
 import Work from "@/core/actions/Work";
 import Purchase from "@/core/actions/Purchase";
+import { BUILDING_TYPES } from "@/constants/buildingTypes";
 
 const MOODS = ['Happy', 'Neutral', 'Sad', 'Stressed', 'Content'];
 const EDUCATION_LEVELS = ['None', 'High School', 'College', 'Graduate'];
@@ -38,6 +39,19 @@ class Citizen {
     this.belongings = [];
     this.money = 1000;
     this.speed = 1; // Default speed
+  }
+
+  getTile() {
+    return this.currentTile;
+  }
+
+  findResidence(context) {
+    if (this.homeBuildingId) {
+      return;
+    }
+    const randomBuilding = context.buildingManager.getAvailableBuilding(BUILDING_TYPES.RESIDENTIAL);
+    this.homeBuildingId = randomBuilding.id;
+    randomBuilding.moveIn(this);
   }
 
   own(product) {
@@ -131,6 +145,8 @@ class Citizen {
       // Future: Citizen might decide to go to work.
     }
 
+    this.findResidence(context);
+
     if (!this.action) {
       // TODO: Action selection needs refinement.
       // The current Move action instantiation might be incorrect based on Move model/action definition.
@@ -144,12 +160,7 @@ class Citizen {
       
       // Placeholder for more complex action instantiation if needed
       if (ActionClass === Move) {
-          // Move action might require a target. For now, it's likely random or needs specific logic.
-          // This part is highly dependent on how Move action is designed to be initiated.
-          // console.log(`${this.name} is deciding to Move (placeholder)`);
-          // For now, let's assume Move can handle being instantiated without a specific path
-          // or that the Move action itself will determine a random path if not provided.
-          this.action = new ActionClass(this, null, context.mapManager); // Example, might not be correct
+          this.action = new ActionClass(this, context.mapManager.getRandomTile()); // Example, might not be correct
       } else {
           this.action = new ActionClass(this);
       }

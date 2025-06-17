@@ -46,6 +46,11 @@
       <Column field="action.name" header="Current Action" :sortable="true"></Column>
       <Column field="currentTile.id" header="Current Tile ID" :sortable="true"></Column>
       <Column field="targetTile.id" header="Target Tile ID" :sortable="true"></Column>
+      <Column field="homeBuildingId" header="Home Building ID" :sortable="true">
+        <template #body="slotProps">
+          {{ slotProps.data.homeBuildingId ? slotProps.data.homeBuildingId.substring(0,8) + '...' : 'N/A' }}
+        </template>
+      </Column>
       <Column field="jobId" header="Job ID" :sortable="true">
         <template #body="slotProps">
           {{ slotProps.data.jobId ? slotProps.data.jobId.substring(0,8) + '...' : 'N/A' }}

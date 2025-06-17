@@ -1,11 +1,12 @@
 import { faker } from "@faker-js/faker";
-
+import CargoLoader from "@/core/actions/CargoLoader";
+import CargoUnloader from "@/core/actions/CargoUnloader";
 import Move from "@/core/models/Move"; // Assuming vehicles will also use the Move action
 
 const VEHICLE_TYPES = ['Car', 'Bus', 'Truck', 'Motorcycle'];
 
 class Vehicle {
-  constructor() {
+  constructor(owner) {
     this.id = faker.string.uuid();
     this.type = VEHICLE_TYPES[Math.floor(Math.random() * VEHICLE_TYPES.length)];
     this.modelName = faker.vehicle.vehicle(); // e.g., 'Corvette', 'F-150'
@@ -13,9 +14,10 @@ class Vehicle {
     // Pixel coordinates - will be reactive if the Vehicle instance is reactive
     this.x = 0;
     this.y = 0;
-
+    this.name = this.modelName;
     // Tile and Pathing
     this.currentTile = null; // Stores the Tile object vehicle is currently on
+    this.actions = [];
     this.action = null;
     this.path = [];
     this.currentPathIndex = 0;
@@ -25,6 +27,33 @@ class Vehicle {
     this.stockings = [];
     this.carryingId = null;
     this.color = faker.color.rgb();
+    if (owner) {
+      this.owner = owner;
+      this.ownerId = owner.id;
+      this.relocate();
+    }
+  }
+
+  relocate() {
+    if (!this.owner) {
+      return;
+    }
+    const location = this.owner.getLocation();
+    if (!location) {
+      return;
+    }
+    this.x = location.x;
+    this.y = location.y;
+  }
+
+  // 送貨到某地後返回
+  deliver(targetTile, returnTile) {
+    this.actions.push(
+      new CargoLoader(this),
+      new Move(this, targetTile),
+      new CargoUnloader(this),
+      new Move(this, returnTile),
+    );
   }
 
   loadCargo() {
@@ -59,26 +88,17 @@ class Vehicle {
   }
 
   resetAction() {
-    if (this.action && this.action instanceof Move) {
-      this.afterMove();
-    }
     this.action = null;
-  }
-
-  beforeMove(context) {
-    this.loadCargo();
-  }
-
-  afterMove(context) {
-    this.unloadCargo();
   }
 
   update(context) {
     if (!this.action) {
-      this.action = new Move(this);
-      this.beforeMove(context);
+      if (this.actions) {
+        const action = this.actions.shift();
+        this.action = action;
+      }
     }
-    this.action.update(context);
+    this.action && this.action.update(context);
   }
 }
 
