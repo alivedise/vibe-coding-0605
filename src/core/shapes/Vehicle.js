@@ -1,6 +1,6 @@
 // src/core/shapes/Vehicle.js
 
-export function drawVehicles(ctx, vehicles, tileSize) {
+export function drawVehicles(ctx, vehicles, tileSize, displayVehicleOwnerId = false) {
   if (!ctx || !vehicles || !tileSize) return;
 
   vehicles.forEach(vehicle => {
@@ -36,20 +36,23 @@ export function drawVehicles(ctx, vehicles, tileSize) {
         cargoDisplayWidth,
         cargoDisplayHeight
       );
-      // draw owner color in border
-      ctx.strokeStyle = vehicle.owner?.color;
-      ctx.strokeRect(
-        pixelX - cargoDisplayWidth / 2, // Center cargo on vehicle's x
-        pixelY - vehicleHeight / 2 - cargoDisplayHeight * 0.75, // Position on top of the vehicle body
-        cargoDisplayWidth,
-        cargoDisplayHeight
-      );
-      // render owner id
-      ctx.fillStyle = vehicle.owner?.color;
-      ctx.font = `10px Arial`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(vehicle.owner?.id, pixelX, pixelY - cargoDisplayHeight - 2); // Position text above the cargo
+
+      if (displayVehicleOwnerId) {
+        // draw owner color in border
+        ctx.strokeStyle = vehicle.owner?.color;
+        ctx.strokeRect(
+          pixelX - cargoDisplayWidth / 2, // Center cargo on vehicle's x
+          pixelY - vehicleHeight / 2 - cargoDisplayHeight * 0.75, // Position on top of the vehicle body
+          cargoDisplayWidth,
+          cargoDisplayHeight
+        );
+        // render owner id
+        ctx.fillStyle = vehicle.owner?.color;
+        ctx.font = `10px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(vehicle.owner?.id, pixelX, pixelY - cargoDisplayHeight - 2); // Position text above the cargo
+      }
     }
   });
 }

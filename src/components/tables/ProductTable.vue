@@ -44,11 +44,8 @@
           {{ slotProps.data.carrierId?.substring(0,8) }}...
         </template>
       </Column>
-      <Column field="producedByJobId" header="Job ID" :sortable="true">
-        <template #body="slotProps">
-          {{ slotProps.data.producedByJobId?.substring(0,8) }}...
-        </template>
-      </Column>
+      <Column field="product" header="Product" :sortable="true"></Column>
+      <Column field="material" header="Material" :sortable="true"></Column>
       <Column field="creationDate" header="Created" :sortable="true">
         <template #body="slotProps">
           {{ new Date(slotProps.data.creationDate).toLocaleTimeString() }}

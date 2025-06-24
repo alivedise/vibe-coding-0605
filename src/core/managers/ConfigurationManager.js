@@ -43,6 +43,7 @@ class ConfigurationManager {
     this.DISPLAY_STOCKINGS = false;
     this.DISPLAY_ACTION = false;
     this.DISPLAY_BELONGING_COUNT = false;
+    this.DISPLAY_VEHICLE_OWNER_ID = false;
   }
 
   update() {

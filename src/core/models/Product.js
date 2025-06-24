@@ -1,10 +1,15 @@
 import { faker } from "@faker-js/faker";
 
+console.log(faker.definitions.commerce.product_name.material);
+console.log(faker.definitions.commerce.product_name.product);
+
 class Product {
   constructor(job) {
     this.id = faker.string.uuid();
     this.carrierId = null;
     this.name = faker.commerce.productName();
+    this.product = faker.commerce.product();
+    this.material = faker.commerce.productMaterial();
     if (!job) {
       this.producedByJobId = null;
       this.producedByCompanyId = null;

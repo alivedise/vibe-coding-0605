@@ -160,9 +160,14 @@ class Citizen {
       
       // Placeholder for more complex action instantiation if needed
       if (ActionClass === Move) {
-          this.action = new ActionClass(this, context.mapManager.getRandomTile()); // Example, might not be correct
+        const targetTile = context.buildingManager.getRandomBuilding().tile;
+        if (!targetTile || targetTile.id === this.currentTile?.id) {
+          console.warn(`Citizen ${this.name} could not find a random tile to target.`);
+          return;
+        }
+        this.action = new ActionClass(this, targetTile); // Example, might not be correct
       } else {
-          this.action = new ActionClass(this);
+        this.action = new ActionClass(this);
       }
 
       if (!this.action) return; // If action couldn't be created
